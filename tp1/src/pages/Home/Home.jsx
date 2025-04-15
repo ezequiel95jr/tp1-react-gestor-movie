@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import styles from "./Home.module.css";
 import Titulo from "../../Components/Titulo/Titulo";
 import Button from "../../Components/Button/Button";
-import Form from "../../Components/Form/Form"; 
+import Form from "../../Components/Form/Form";
+import Card from "../../Components/Card/Card";
 
 const Home = () => {
   
@@ -20,6 +21,12 @@ const [peliculas, setPeliculas] = useState([]);
     rating: 0,
   });
 
+  // useEffect
+  useEffect(() => {
+    const peliculasGuardadas = JSON.parse(localStorage.getItem("peliculas")) || [];
+    setPeliculas(peliculasGuardadas);
+  }, []);
+  
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -42,9 +49,8 @@ const [peliculas, setPeliculas] = useState([]);
       director: "",
       rating: 0,
     });
-  };
-  
-
+  localStorage.setItem("peliculas", JSON.stringify(nuevasPeliculas));
+};
 
 
   return (
@@ -55,6 +61,14 @@ const [peliculas, setPeliculas] = useState([]);
         onSubmit={agregarPelicula}
         onChange={handleChange}
         pelicula={nuevaPelicula}/>
+
+  {peliculas.length > 0 ? (
+    peliculas.map((pelicula) => (
+    <Card key={pelicula.titulo} pelicula={pelicula} />
+  ))
+) : (
+  <p>No hay películas agregadas aún.</p>
+)}
 
     </div>
   );

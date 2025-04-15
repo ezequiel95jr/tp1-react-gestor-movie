@@ -1,19 +1,12 @@
 import './Form.css';
 import Button from '../Button/Button.jsx';
- 
 
 const Form = ({ onSubmit, onChange, pelicula }) => {
 
- 
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    onsubmit();  
+    onSubmit();  // Llamar a la función onSubmit pasada por props
   };
-
-
-
-
 
   return (
     <form className="form" onSubmit={handleSubmit}>
@@ -94,4 +87,4 @@ const Form = ({ onSubmit, onChange, pelicula }) => {
   );
 }
 
-export default Form;   
+export default Form;
