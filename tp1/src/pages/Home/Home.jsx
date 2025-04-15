@@ -10,6 +10,7 @@ const Home = () => {
 //States
 
 const [peliculas, setPeliculas] = useState([]);
+const [peliculasVistas, setPeliculasVistas] = useState([]);
 
 
   const [nuevaPelicula, setNuevaPelicula] = useState({
@@ -27,6 +28,11 @@ const [peliculas, setPeliculas] = useState([]);
     setPeliculas(peliculasGuardadas);
   }, []);
   
+  useEffect(() => {
+    const vistasGuardadas = JSON.parse(localStorage.getItem("vistas")) || [];
+    setPeliculasVistas(vistasGuardadas);
+  }, []);
+  //Funciones
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -52,7 +58,23 @@ const [peliculas, setPeliculas] = useState([]);
   localStorage.setItem("peliculas", JSON.stringify(nuevasPeliculas));
 };
 
+const eliminarPelicula = (titulo) => {
+  const filtradas = peliculas.filter((peli) => peli.titulo !== titulo);
+  setPeliculas(filtradas);
+  localStorage.setItem("peliculas", JSON.stringify(filtradas));
+};
 
+const modificarPelicula = (pelicula) => {
+  setNuevaPelicula(pelicula);
+};
+
+const marcarComoVista = (pelicula) => {
+  if (!peliculasVistas.some((p) => p.titulo === pelicula.titulo)) {
+    const nuevasVistas = [...peliculasVistas, pelicula];
+    setPeliculasVistas(nuevasVistas);
+    localStorage.setItem("vistas", JSON.stringify(nuevasVistas));
+  }
+};
   return (
     <div className="home">
       <Titulo titulo="Bienvenido al Gestor de Peliculas" />
@@ -64,7 +86,13 @@ const [peliculas, setPeliculas] = useState([]);
 
   {peliculas.length > 0 ? (
     peliculas.map((pelicula) => (
-    <Card key={pelicula.titulo} pelicula={pelicula} />
+      <Card
+      key={pelicula.titulo}
+      pelicula={pelicula}
+      onEliminar={() => eliminarPelicula(pelicula.titulo)}
+      onModificar={() => modificarPelicula(pelicula.titulo)}
+      onMarcarVistas={() => marcarComoVista(pelicula)}
+    />
   ))
 ) : (
   <p>No hay películas agregadas aún.</p>
