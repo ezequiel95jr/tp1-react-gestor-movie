@@ -28,11 +28,11 @@ const Home = () => {
     localStorage.setItem("peliculas", JSON.stringify(peliculas));
   }, [peliculas]);
   
-  const agregarPelicula = (nuevaPelicula) => { 
+  /**const agregarPelicula = (nuevaPelicula) => { 
     const nuevaPelicula =[... peliculas, nuevaPelicula];
     setPeliculas(nuevasPeliculas);
     localStorage.setItem("peliculas", JSON.stringify(nuevasPeliculas));
-  }
+  }*/
 
 
 
