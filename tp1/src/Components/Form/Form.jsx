@@ -1,23 +1,14 @@
 import './Form.css';
-import '../Button/Button.jsx';
 import Button from '../Button/Button.jsx';
-import { useState } from 'react';   
+ 
 
 const Form = ({ onSubmit, onChange, pelicula }) => {
 
- const [nuevaPelicula, setNuevaPelicula] = useState({
-    titulo: "",
-    genero: "",
-    tipo: "",
-    año: "",
-    director: "",
-    rating: 0,
-  });
+ 
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    agregarPelicula(nuevaPelicula);  
-    setNuevaPelicula({ titulo: "", genero: "", tipo: "", año: "", director: "", rating: 0 });  
+    onsubmit();  
   };
 
 
@@ -32,6 +23,7 @@ const Form = ({ onSubmit, onChange, pelicula }) => {
           type="text"
           id="titulo"
           name="titulo"
+          className='input'
           value={pelicula.titulo}
           onChange={onChange}
           required
@@ -43,6 +35,7 @@ const Form = ({ onSubmit, onChange, pelicula }) => {
           type="text"
           id="genero"
           name="genero"
+          className='input'
           value={pelicula.genero}
           onChange={onChange}
           required
@@ -54,6 +47,7 @@ const Form = ({ onSubmit, onChange, pelicula }) => {
           type="text"
           id="tipo"
           name="tipo"
+          className='input'
           value={pelicula.tipo}
           onChange={onChange}
           required
@@ -65,6 +59,7 @@ const Form = ({ onSubmit, onChange, pelicula }) => {
           type="number"
           id="año"
           name="año"
+          className='input'
           value={pelicula.año}
           onChange={onChange}
           required
@@ -76,6 +71,7 @@ const Form = ({ onSubmit, onChange, pelicula }) => {
           type="text"
           id="director"
           name="director"
+          className='input'
           value={pelicula.director}
           onChange={onChange}
           required
@@ -87,12 +83,13 @@ const Form = ({ onSubmit, onChange, pelicula }) => {
           type="number"
           id="rating"
           name="rating"
+          className='input'
           value={pelicula.rating}
           onChange={onChange}
           required
         />
       </div>
-      <Button type='submit'>Agregar pelicula</Button>
+      <Button texto="Agregar pelicula" type='submit'></Button>
     </form>
   );
 }

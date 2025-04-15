@@ -5,41 +5,57 @@ import Button from "../../Components/Button/Button";
 import Form from "../../Components/Form/Form"; 
 
 const Home = () => {
-  //useStates
-  const [listaPorVer, setListaPorVer] = useState([]);
-  const [listaVistas, setListaVistas] = useState([]);
-  const [filtroGenero, setFiltroGenero] = useState("todos");
-  const [filtroTipo, setFiltroTipo] = useState("todos");
-  const [busqueda, setBusqueda ] = useState("");
-  const [orden, setOrden] = useState({campo: "año", tipo: "ascendete"});
-  const [peliculas, setPeliculas] = useState([]);
- 
-
-//useEffect 
-
-  useEffect(() => {
-    const data = localStorage.getItem("peliculas");
-    if (data) {
-    setPeliculas(JSON.parse(data));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("peliculas", JSON.stringify(peliculas));
-  }, [peliculas]);
   
-  /**const agregarPelicula = (nuevaPelicula) => { 
-    const nuevaPelicula =[... peliculas, nuevaPelicula];
-    setPeliculas(nuevasPeliculas);
-    localStorage.setItem("peliculas", JSON.stringify(nuevasPeliculas));
-  }*/
+//States
 
+const [peliculas, setPeliculas] = useState([]);
+
+
+  const [nuevaPelicula, setNuevaPelicula] = useState({
+    titulo: "",
+    genero: "",
+    tipo: "",
+    año: "",
+    director: "",
+    rating: 0,
+  });
+
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+  
+    setNuevaPelicula((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  
+
+  const agregarPelicula = () => {
+    const nuevasPeliculas = [...peliculas, nuevaPelicula];
+    setPeliculas(nuevasPeliculas);
+    setNuevaPelicula({
+      titulo: "",
+      genero: "",
+      tipo: "",
+      año: "",
+      director: "",
+      rating: 0,
+    });
+  };
+  
 
 
 
   return (
     <div className="home">
       <Titulo titulo="Bienvenido al Gestor de Peliculas" />
+
+      <Form
+        onSubmit={agregarPelicula}
+        onChange={handleChange}
+        pelicula={nuevaPelicula}/>
+
     </div>
   );
 }
