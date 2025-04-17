@@ -1,90 +1,86 @@
-import './Form.css';
-import Button from '../Button/Button.jsx';
-
 const Form = ({ onSubmit, onChange, pelicula }) => {
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit();  // Llamar a la función onSubmit pasada por props
-  };
-
   return (
-    <form className="form" onSubmit={handleSubmit}>
-      <div className="form-group">
-        <label htmlFor="titulo">Titulo</label>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit();
+      }}
+    >
+      <label>
+        Título:
         <input
           type="text"
-          id="titulo"
           name="titulo"
-          className='input'
+          placeholder="Título"
           value={pelicula.titulo}
           onChange={onChange}
           required
         />
-      </div>
-      <div className="form-group">
-        <label htmlFor="genero">Género</label>
+      </label>
+
+      <label>
+        Género:
         <input
           type="text"
-          id="genero"
           name="genero"
-          className='input'
+          placeholder="Género"
           value={pelicula.genero}
           onChange={onChange}
           required
         />
-      </div>
-      <div className="form-group">
-        <label htmlFor="tipo">Tipo</label>
+      </label>
+
+      <label>
+        Tipo:
         <input
           type="text"
-          id="tipo"
           name="tipo"
-          className='input'
+          placeholder="Tipo"
           value={pelicula.tipo}
           onChange={onChange}
           required
         />
-      </div>
-      <div className="form-group">
-        <label htmlFor="año">Año</label>
+      </label>
+
+      <label>
+        Año:
         <input
-          type="number"
-          id="año"
+          type="text"
           name="año"
-          className='input'
+          placeholder="Año"
           value={pelicula.año}
           onChange={onChange}
           required
         />
-      </div>
-      <div className="form-group">
-        <label htmlFor="director">Director</label>
+      </label>
+
+      <label>
+        Director:
         <input
           type="text"
-          id="director"
           name="director"
-          className='input'
+          placeholder="Director"
           value={pelicula.director}
           onChange={onChange}
           required
         />
-      </div>
-      <div className="form-group">
-        <label htmlFor="rating">Rating</label>
+      </label>
+
+      <label>
+        Rating:
         <input
           type="number"
-          id="rating"
           name="rating"
-          className='input'
+          placeholder="Rating"
           value={pelicula.rating}
           onChange={onChange}
           required
         />
-      </div>
-      <Button texto="Agregar pelicula" type='submit'></Button>
+      </label>
+
+      <button type="submit">Agregar</button>
     </form>
   );
-}
+};
 
 export default Form;

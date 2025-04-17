@@ -17,26 +17,17 @@ const Home = () => {
     rating: 0,
   });
 
-  
   useEffect(() => {
     const peliculasGuardadas = JSON.parse(localStorage.getItem("peliculas")) || [];
     setPeliculas(peliculasGuardadas);
+  }, []);
 
+  useEffect(() => {
     const vistasGuardadas = JSON.parse(localStorage.getItem("vistas")) || [];
     setPeliculasVistas(vistasGuardadas);
   }, []);
 
-  
-  useEffect(() => {
-    localStorage.setItem("peliculas", JSON.stringify(peliculas));
-  }, [peliculas]);
-
-  
-  useEffect(() => {
-    localStorage.setItem("vistas", JSON.stringify(peliculasVistas));
-  }, [peliculasVistas]);
-
-  const handleChange = (e) => {
+  const cambiarCampos = (e) => {
     const { name, value } = e.target;
     setNuevaPelicula((prev) => ({
       ...prev,
@@ -47,7 +38,8 @@ const Home = () => {
   const agregarPelicula = () => {
     const idUnico = peliculas.length ? peliculas[peliculas.length - 1].id + 1 : 1;
     const nuevaConId = { ...nuevaPelicula, id: idUnico };
-    setPeliculas([...peliculas, nuevaConId]);
+    const nuevasPeliculas = [...peliculas, nuevaConId];
+    setPeliculas(nuevasPeliculas);
     setNuevaPelicula({
       titulo: "",
       genero: "",
@@ -56,10 +48,22 @@ const Home = () => {
       director: "",
       rating: 0,
     });
+    localStorage.setItem("peliculas", JSON.stringify(nuevasPeliculas));
   };
 
   const eliminarPelicula = (id) => {
-    setPeliculas(peliculas.filter((peli) => peli.id !== id));
+    const filtradas = peliculas.filter((peli) => peli.id !== id);
+    setPeliculas(filtradas);
+    localStorage.setItem("peliculas", JSON.stringify(filtradas));
+  };
+
+  const eliminarConConfirmacion = (id) => {
+    const confirmacion = window.confirm(
+      "Confirmar eliminacion?"
+    );
+    if (confirmacion) {
+      eliminarPelicula(id); // Llama a eliminarPelicula si el usuario confirma
+    }
   };
 
   const modificarPelicula = (peliculaEditada) => {
@@ -71,21 +75,30 @@ const Home = () => {
 
   const marcarComoVista = (pelicula) => {
     if (!peliculasVistas.some((p) => p.id === pelicula.id)) {
-      setPeliculasVistas([...peliculasVistas, pelicula]);
+      const nuevasVistas = [...peliculasVistas, pelicula];
+      setPeliculasVistas(nuevasVistas);
     }
   };
+
+  useEffect(() => {
+    localStorage.setItem("peliculas", JSON.stringify(peliculas));
+  }, [peliculas]);
+
+  useEffect(() => {
+    localStorage.setItem("vistas", JSON.stringify(peliculasVistas));
+  }, [peliculasVistas]);
 
   return (
     <div className="home">
       <Titulo titulo="Bienvenido al Gestor de Peliculas" />
-      <Form onSubmit={agregarPelicula} onChange={handleChange} pelicula={nuevaPelicula} />
+      <Form onSubmit={agregarPelicula} onChange={cambiarCampos} pelicula={nuevaPelicula} />
 
       {peliculas.length > 0 ? (
         peliculas.map((pelicula) => (
           <Card
             key={pelicula.id}
             pelicula={pelicula}
-            onEliminar={() => eliminarPelicula(pelicula.id)}
+            onEliminar={eliminarConConfirmacion} // Aquí pasa la función de confirmación
             onModificar={modificarPelicula}
             onMarcarVista={() => marcarComoVista(pelicula)}
           />
