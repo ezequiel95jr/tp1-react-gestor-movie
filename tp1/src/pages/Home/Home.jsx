@@ -17,7 +17,7 @@ const Home = () => {
     rating: 0,
   });
 
-  // Cargar del localStorage solo al inicio
+  
   useEffect(() => {
     const peliculasGuardadas = JSON.parse(localStorage.getItem("peliculas")) || [];
     setPeliculas(peliculasGuardadas);
@@ -26,12 +26,12 @@ const Home = () => {
     setPeliculasVistas(vistasGuardadas);
   }, []);
 
-  // Guardar automáticamente las películas cada vez que cambian
+  
   useEffect(() => {
     localStorage.setItem("peliculas", JSON.stringify(peliculas));
   }, [peliculas]);
 
-  // Guardar automáticamente las vistas cada vez que cambian
+  
   useEffect(() => {
     localStorage.setItem("vistas", JSON.stringify(peliculasVistas));
   }, [peliculasVistas]);

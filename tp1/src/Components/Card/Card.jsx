@@ -14,7 +14,7 @@ const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista }) => {
     }));
   };
 
-  // Guarda automáticamente los cambios cuando se modifican los datos
+  
   useEffect(() => {
     if (modoEdicion) {
       const datosConRatingNumerico = {
@@ -26,8 +26,8 @@ const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista }) => {
   }, [datosEditados, modoEdicion]);
 
   const cancelarEdicion = () => {
-    setDatosEditados({ ...pelicula }); // Restaura los datos originales
-    setModoEdicion(false); // Sale del modo edición
+    setDatosEditados({ ...pelicula }); 
+    setModoEdicion(false); 
   };
 
   return (
