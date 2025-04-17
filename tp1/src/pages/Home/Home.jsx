@@ -62,8 +62,7 @@ const Home = () => {
       "Confirmar eliminacion?"
     );
     if (confirmacion) {
-      eliminarPelicula(id); // Llama a eliminarPelicula si el usuario confirma
-    }
+      eliminarPelicula(id); 
   };
 
   const modificarPelicula = (peliculaEditada) => {
@@ -98,8 +97,7 @@ const Home = () => {
           <Card
             key={pelicula.id}
             pelicula={pelicula}
-            onEliminar={eliminarConConfirmacion} // Aquí pasa la función de confirmación
-            onModificar={modificarPelicula}
+            onEliminar={eliminarConConfirmacion} 
             onMarcarVista={() => marcarComoVista(pelicula)}
           />
         ))
@@ -109,5 +107,5 @@ const Home = () => {
     </div>
   );
 };
-
+}
 export default Home;
