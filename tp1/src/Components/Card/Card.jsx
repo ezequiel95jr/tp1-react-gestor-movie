@@ -1,6 +1,6 @@
 import "./Card.css";
 import Button from "../Button/Button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista }) => {
   const [modoEdicion, setModoEdicion] = useState(false);
@@ -14,13 +14,20 @@ const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista }) => {
     }));
   };
 
-  const guardarCambios = () => {
-    const datosEditadosConRatingCorrecto = {
-      ...datosEditados,
-      rating: Number(datosEditados.rating),
-    };
-    onModificar(datosEditadosConRatingCorrecto);
-    setModoEdicion(false);
+  // Guarda automáticamente los cambios cuando se modifican los datos
+  useEffect(() => {
+    if (modoEdicion) {
+      const datosConRatingNumerico = {
+        ...datosEditados,
+        rating: Number(datosEditados.rating),
+      };
+      onModificar(datosConRatingNumerico);
+    }
+  }, [datosEditados, modoEdicion]);
+
+  const cancelarEdicion = () => {
+    setDatosEditados({ ...pelicula }); // Restaura los datos originales
+    setModoEdicion(false); // Sale del modo edición
   };
 
   return (
@@ -71,7 +78,7 @@ const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista }) => {
       <div className="card-buttons">
         <Button texto="Eliminar" onClick={() => onEliminar(pelicula.id)} />
         {modoEdicion ? (
-          <Button texto="Guardar" onClick={guardarCambios} />
+          <Button texto="Aceptar" onClick={cancelarEdicion} />
         ) : (
           <Button texto="Modificar" onClick={() => setModoEdicion(true)} />
         )}

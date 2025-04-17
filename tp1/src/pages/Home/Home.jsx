@@ -6,13 +6,8 @@ import Form from "../../Components/Form/Form";
 import Card from "../../Components/Card/Card";
 
 const Home = () => {
-  
-//States
-
-const [peliculas, setPeliculas] = useState([]);
-const [peliculasVistas, setPeliculasVistas] = useState([]);
-
-
+  const [peliculas, setPeliculas] = useState([]);
+  const [peliculasVistas, setPeliculasVistas] = useState([]);
   const [nuevaPelicula, setNuevaPelicula] = useState({
     titulo: "",
     genero: "",
@@ -22,31 +17,37 @@ const [peliculasVistas, setPeliculasVistas] = useState([]);
     rating: 0,
   });
 
-  // useEffect
+  // Cargar del localStorage solo al inicio
   useEffect(() => {
     const peliculasGuardadas = JSON.parse(localStorage.getItem("peliculas")) || [];
     setPeliculas(peliculasGuardadas);
-  }, []);
-  
-  useEffect(() => {
+
     const vistasGuardadas = JSON.parse(localStorage.getItem("vistas")) || [];
     setPeliculasVistas(vistasGuardadas);
   }, []);
-  //Funciones
+
+  // Guardar automáticamente las películas cada vez que cambian
+  useEffect(() => {
+    localStorage.setItem("peliculas", JSON.stringify(peliculas));
+  }, [peliculas]);
+
+  // Guardar automáticamente las vistas cada vez que cambian
+  useEffect(() => {
+    localStorage.setItem("vistas", JSON.stringify(peliculasVistas));
+  }, [peliculasVistas]);
+
   const handleChange = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-  
+    const { name, value } = e.target;
     setNuevaPelicula((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
-  
 
   const agregarPelicula = () => {
-    const nuevasPeliculas = [...peliculas, nuevaPelicula];
-    setPeliculas(nuevasPeliculas);
+    const idUnico = peliculas.length ? peliculas[peliculas.length - 1].id + 1 : 1;
+    const nuevaConId = { ...nuevaPelicula, id: idUnico };
+    setPeliculas([...peliculas, nuevaConId]);
     setNuevaPelicula({
       titulo: "",
       genero: "",
@@ -55,51 +56,45 @@ const [peliculasVistas, setPeliculasVistas] = useState([]);
       director: "",
       rating: 0,
     });
-  localStorage.setItem("peliculas", JSON.stringify(nuevasPeliculas));
-};
+  };
 
-const eliminarPelicula = (titulo) => {
-  const filtradas = peliculas.filter((peli) => peli.titulo !== titulo);
-  setPeliculas(filtradas);
-  localStorage.setItem("peliculas", JSON.stringify(filtradas));
-};
+  const eliminarPelicula = (id) => {
+    setPeliculas(peliculas.filter((peli) => peli.id !== id));
+  };
 
-const modificarPelicula = (pelicula) => {
-  setNuevaPelicula(pelicula);
-};
+  const modificarPelicula = (peliculaEditada) => {
+    const actualizadas = peliculas.map((p) =>
+      p.id === peliculaEditada.id ? { ...peliculaEditada } : p
+    );
+    setPeliculas(actualizadas);
+  };
 
-const marcarComoVista = (pelicula) => {
-  if (!peliculasVistas.some((p) => p.titulo === pelicula.titulo)) {
-    const nuevasVistas = [...peliculasVistas, pelicula];
-    setPeliculasVistas(nuevasVistas);
-    localStorage.setItem("vistas", JSON.stringify(nuevasVistas));
-  }
-};
+  const marcarComoVista = (pelicula) => {
+    if (!peliculasVistas.some((p) => p.id === pelicula.id)) {
+      setPeliculasVistas([...peliculasVistas, pelicula]);
+    }
+  };
+
   return (
     <div className="home">
       <Titulo titulo="Bienvenido al Gestor de Peliculas" />
+      <Form onSubmit={agregarPelicula} onChange={handleChange} pelicula={nuevaPelicula} />
 
-      <Form
-        onSubmit={agregarPelicula}
-        onChange={handleChange}
-        pelicula={nuevaPelicula}/>
-
-  {peliculas.length > 0 ? (
-    peliculas.map((pelicula) => (
-      <Card
-      key={pelicula.titulo}
-      pelicula={pelicula}
-      onEliminar={() => eliminarPelicula(pelicula.titulo)}
-      onModificar={() => modificarPelicula(pelicula.titulo)}
-      onMarcarVistas={() => marcarComoVista(pelicula)}
-    />
-  ))
-) : (
-  <p>No hay películas agregadas aún.</p>
-)}
-
+      {peliculas.length > 0 ? (
+        peliculas.map((pelicula) => (
+          <Card
+            key={pelicula.id}
+            pelicula={pelicula}
+            onEliminar={() => eliminarPelicula(pelicula.id)}
+            onModificar={modificarPelicula}
+            onMarcarVista={() => marcarComoVista(pelicula)}
+          />
+        ))
+      ) : (
+        <p>No hay películas agregadas aún.</p>
+      )}
     </div>
   );
-}
+};
 
 export default Home;
