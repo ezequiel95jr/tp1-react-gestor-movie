@@ -58,11 +58,10 @@ const Home = () => {
   };
 
   const eliminarConConfirmacion = (id) => {
-    const confirmacion = window.confirm(
-      "Confirmar eliminacion?"
-    );
+    const confirmacion = window.confirm("Confirmar eliminacion?");
     if (confirmacion) {
       eliminarPelicula(id); 
+    }
   };
 
   const modificarPelicula = (peliculaEditada) => {
@@ -88,7 +87,7 @@ const Home = () => {
   }, [peliculasVistas]);
 
   return (
-    <div className="home">
+    <div className={styles.home}>
       <Titulo titulo="Bienvenido al Gestor de Peliculas" />
       <Form onSubmit={agregarPelicula} onChange={cambiarCampos} pelicula={nuevaPelicula} />
 
@@ -97,7 +96,8 @@ const Home = () => {
           <Card
             key={pelicula.id}
             pelicula={pelicula}
-            onEliminar={eliminarConConfirmacion} 
+            onEliminar={eliminarConConfirmacion} // Aquí pasa la función de confirmación
+            onModificar={modificarPelicula}
             onMarcarVista={() => marcarComoVista(pelicula)}
           />
         ))
@@ -107,5 +107,5 @@ const Home = () => {
     </div>
   );
 };
-}
+
 export default Home;
