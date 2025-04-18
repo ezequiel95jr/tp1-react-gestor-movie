@@ -17,16 +17,23 @@ const Home = () => {
     rating: 0,
   });
 
+  
   useEffect(() => {
     const peliculasGuardadas = JSON.parse(localStorage.getItem("peliculas")) || [];
-    setPeliculas(peliculasGuardadas);
+    if (peliculasGuardadas.length > 0) {
+      setPeliculas(peliculasGuardadas);
+    }
   }, []);
 
+  
   useEffect(() => {
     const vistasGuardadas = JSON.parse(localStorage.getItem("vistas")) || [];
-    setPeliculasVistas(vistasGuardadas);
+    if (vistasGuardadas.length > 0) {
+      setPeliculasVistas(vistasGuardadas);
+    }
   }, []);
 
+  
   const cambiarCampos = (e) => {
     const { name, value } = e.target;
     setNuevaPelicula((prev) => ({
@@ -35,6 +42,7 @@ const Home = () => {
     }));
   };
 
+ 
   const agregarPelicula = () => {
     const idUnico = peliculas.length ? peliculas[peliculas.length - 1].id + 1 : 1;
     const nuevaConId = { ...nuevaPelicula, id: idUnico };
@@ -48,55 +56,76 @@ const Home = () => {
       director: "",
       rating: 0,
     });
+
+    
     localStorage.setItem("peliculas", JSON.stringify(nuevasPeliculas));
   };
 
-  const eliminarPelicula = (id) => {
-    const filtradas = peliculas.filter((peli) => peli.id !== id);
+  
+  const eliminarPelicula = (pelicula) => {
+    const filtradas = peliculas.filter((peli) => peli.id !== pelicula.id);
     setPeliculas(filtradas);
+    
     localStorage.setItem("peliculas", JSON.stringify(filtradas));
   };
 
-  const eliminarConConfirmacion = (id) => {
+  
+  const eliminarConConfirmacion = (pelicula) => {
     const confirmacion = window.confirm("Confirmar eliminacion?");
     if (confirmacion) {
-      eliminarPelicula(id); 
+      eliminarPelicula(pelicula);
     }
   };
 
+  
   const modificarPelicula = (peliculaEditada) => {
     const actualizadas = peliculas.map((p) =>
       p.id === peliculaEditada.id ? { ...peliculaEditada } : p
     );
     setPeliculas(actualizadas);
+    
+    localStorage.setItem("peliculas", JSON.stringify(actualizadas));
   };
 
+  
   const marcarComoVista = (pelicula) => {
     if (!peliculasVistas.some((p) => p.id === pelicula.id)) {
       const nuevasVistas = [...peliculasVistas, pelicula];
       setPeliculasVistas(nuevasVistas);
+      
+      localStorage.setItem("vistas", JSON.stringify(nuevasVistas));
     }
   };
 
+ 
   useEffect(() => {
-    localStorage.setItem("peliculas", JSON.stringify(peliculas));
+    if (peliculas.length > 0) {
+      localStorage.setItem("peliculas", JSON.stringify(peliculas));
+    }
   }, [peliculas]);
 
+  
   useEffect(() => {
-    localStorage.setItem("vistas", JSON.stringify(peliculasVistas));
+    if (peliculasVistas.length > 0) {
+      localStorage.setItem("vistas", JSON.stringify(peliculasVistas));
+    }
   }, [peliculasVistas]);
 
   return (
     <div className={styles.home}>
       <Titulo titulo="Bienvenido al Gestor de Peliculas" />
-      <Form onSubmit={agregarPelicula} onChange={cambiarCampos} pelicula={nuevaPelicula} />
+      <Form
+        onSubmit={agregarPelicula}
+        onChange={cambiarCampos} 
+        pelicula={nuevaPelicula}
+      />
 
       {peliculas.length > 0 ? (
         peliculas.map((pelicula) => (
           <Card
             key={pelicula.id}
             pelicula={pelicula}
-            onEliminar={eliminarConConfirmacion} // Aquí pasa la función de confirmación
+            onEliminar={eliminarConConfirmacion}
             onModificar={modificarPelicula}
             onMarcarVista={() => marcarComoVista(pelicula)}
           />
