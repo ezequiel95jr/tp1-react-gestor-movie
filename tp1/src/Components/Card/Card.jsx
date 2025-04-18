@@ -14,7 +14,6 @@ const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista }) => {
     }));
   };
 
-  
   useEffect(() => {
     if (modoEdicion) {
       const datosConRatingNumerico = {
@@ -26,8 +25,20 @@ const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista }) => {
   }, [datosEditados, modoEdicion]);
 
   const cancelarEdicion = () => {
-    setDatosEditados({ ...pelicula }); 
-    setModoEdicion(false); 
+    setDatosEditados({ ...pelicula });
+    setModoEdicion(false);
+  };
+
+  const generarOpcionesAño = () => {
+    const opciones = [];
+    for (let año = 1895; año <= 2025; año++) {
+      opciones.push(
+        <option key={año} value={año}>
+          {año}
+        </option>
+      );
+    }
+    return opciones;
   };
 
   return (
@@ -40,18 +51,36 @@ const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista }) => {
             value={datosEditados.titulo}
             onChange={handleChange}
           />
-          <input
-            type="text"
+          <select
             name="genero"
             value={datosEditados.genero}
             onChange={handleChange}
-          />
-          <input
-            type="text"
+          >
+            <option value="">Seleccionar género</option>
+            <option value="Acción">Acción</option>
+            <option value="Comedia">Comedia</option>
+            <option value="Drama">Drama</option>
+            <option value="Terror">Terror</option>
+            <option value="Ciencia ficción">Ciencia ficción</option>
+            <option value="Romance">Romance</option>
+          </select>
+          <select
+            name="tipo"
+            value={datosEditados.tipo}
+            onChange={handleChange}
+          >
+            <option value="">Seleccionar tipo</option>
+            <option value="Película">Película</option>
+            <option value="Serie">Serie</option>
+          </select>
+          <select
             name="año"
             value={datosEditados.año}
             onChange={handleChange}
-          />
+          >
+            <option value="">Seleccionar año</option>
+            {generarOpcionesAño()}
+          </select>
           <input
             type="text"
             name="director"
@@ -68,7 +97,8 @@ const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista }) => {
       ) : (
         <>
           <h3>{pelicula.titulo}</h3>
-          <p>Genero: {pelicula.genero}</p>
+          <p>Género: {pelicula.genero}</p>
+          <p>Tipo: {pelicula.tipo}</p>
           <p>Año: {pelicula.año}</p>
           <p>Director: {pelicula.director}</p>
           <p>Rating: {pelicula.rating}</p>

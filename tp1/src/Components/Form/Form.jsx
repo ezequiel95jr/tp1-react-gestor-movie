@@ -19,27 +19,35 @@ const Form = ({ onSubmit, onChange, pelicula }) => {
       </label>
 
       <label>
-        Género:
-        <input
-          type="text"
-          name="genero"
-          placeholder="Género"
-          value={pelicula.genero}
-          onChange={onChange}
-          required
-        />
-      </label>
+  Género:
+  <select
+    name="genero"
+    value={pelicula.genero}
+    onChange={onChange}
+    required
+  >
+    <option value="">Seleccionar género</option>
+    <option value="Acción">Acción</option>
+    <option value="Comedia">Comedia</option>
+    <option value="Drama">Drama</option>
+    <option value="Terror">Terror</option>
+    <option value="Ciencia ficción">Ciencia ficción</option>
+    <option value="Romance">Romance</option>
+  </select>
+</label>
 
       <label>
         Tipo:
-        <input
-          type="text"
+        <select
           name="tipo"
-          placeholder="Tipo"
           value={pelicula.tipo}
           onChange={onChange}
           required
-        />
+        >
+          <option value="">Seleccionar tipo</option>
+          <option value="Película">Película</option>
+          <option value="Serie">Serie</option>
+        </select>
       </label>
 
       <label>
