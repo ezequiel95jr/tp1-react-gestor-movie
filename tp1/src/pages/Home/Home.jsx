@@ -58,12 +58,12 @@ const Home = () => {
   };
 
   const eliminarConConfirmacion = (id) => {
-    const confirmacion = window.confirm(
-      "Confirmar eliminacion?"
-    );
+    const confirmacion = window.confirm("Confirmar eliminacion?");
     if (confirmacion) {
       eliminarPelicula(id); 
+    }
   };
+  
 
   const modificarPelicula = (peliculaEditada) => {
     const actualizadas = peliculas.map((p) =>
@@ -88,7 +88,7 @@ const Home = () => {
   }, [peliculasVistas]);
 
   return (
-    <div className="home">
+    <div>
       <Titulo titulo="Bienvenido al Gestor de Peliculas" />
       <Form onSubmit={agregarPelicula} onChange={cambiarCampos} pelicula={nuevaPelicula} />
 
@@ -107,5 +107,4 @@ const Home = () => {
     </div>
   );
 };
-}
 export default Home;
