@@ -1,3 +1,5 @@
+import style from "./Form.module.css";  
+import Button from "../Button/Button";
 const Form = ({ pelicula, onSubmit, onChange }) => {
   const handleChange = (e) => {
     onChange(e); 
@@ -21,13 +23,10 @@ const Form = ({ pelicula, onSubmit, onChange }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={style.form}>
+      <h2>Agregar Película</h2>
       <input
-        type="text"
-        name="titulo"
-        value={pelicula.titulo}
-        onChange={handleChange}
-      />
+        type="text" name="titulo" value={pelicula.titulo} onChange={handleChange} />
       <select
         name="genero"
         value={pelicula.genero}
@@ -70,7 +69,7 @@ const Form = ({ pelicula, onSubmit, onChange }) => {
         value={pelicula.rating}
         onChange={handleChange}
       />
-      <button type="submit">Aceptar</button>
+    <Button type="submit">Agregar</Button>
     </form>
   );
 };

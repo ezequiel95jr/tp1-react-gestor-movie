@@ -1,4 +1,3 @@
-import "./Card.css";
 import Button from "../Button/Button";
 import { useState } from "react";
 import Form from "../Form/Form";
