@@ -133,10 +133,21 @@ function Home() {
         ) : (
           <p>No hay películas agregadas aún.</p>
         )}
-        <Button onClick={() => setMostrarModal(true)}>
-          Agregar Película
-        </Button> 
         </div>
+        {peliculasVistas.length > 0 && (
+          <div className={styles.vistas}>
+            <h2>Películas Vistas</h2>
+            <div className={styles.box}>
+              {peliculasVistas.map((pelicula) => (
+                <Card
+                  key={pelicula.id}
+                  pelicula={pelicula}
+                  vista={true} 
+                />
+              ))}
+            </div>
+          </div>
+        )}
         {mostrarModal && (
         <Modal onClose={() => setMostrarModal(false)}>
           <Form
@@ -149,9 +160,10 @@ function Home() {
           />
         </Modal>
       )}
-
-        
-    </div>
+        <Button onClick={() => setMostrarModal(true)}>
+          Agregar 
+        </Button> 
+    </div>  
   </div>
   );
 }

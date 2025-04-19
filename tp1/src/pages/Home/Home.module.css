@@ -6,4 +6,20 @@
     padding: 1rem;
     box-sizing: border-box;
   }
+  .box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;    
+  }
+  
+  .vistas {
+    margin-top: 40px;
+    border-top: 2px solid #ccc;
+    padding-top: 20px;
+  }
+  
+  .vistas .card {
+    opacity: 0.6;
+  }
   

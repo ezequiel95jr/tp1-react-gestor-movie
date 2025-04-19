@@ -8,7 +8,6 @@ const Header = () => {
       <nav>
         <ul>
           <li><a href="/">Buscar</a></li>
-          <li><a href="#form">Agregar</a></li>
         </ul>
       </nav>
     </header>
