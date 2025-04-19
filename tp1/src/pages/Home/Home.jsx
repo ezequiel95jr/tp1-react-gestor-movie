@@ -73,12 +73,7 @@ function Home() {
   };
 
 
-  const eliminarConConfirmacion = (id) => {
-    const confirmacion = window.confirm("Confirmar eliminacion?");
-    if (confirmacion) {
-      eliminarPelicula(id);
-    }
-  };
+  
 
 
 
@@ -95,10 +90,14 @@ function Home() {
     if (!peliculasVistas.some((p) => p.id === pelicula.id)) {
       const nuevasVistas = [...peliculasVistas, pelicula];
       setPeliculasVistas(nuevasVistas);
-
       localStorage.setItem("vistas", JSON.stringify(nuevasVistas));
+  
+      const peliculasActualizadas = peliculas.filter((p) => p.id !== pelicula.id);
+      setPeliculas(peliculasActualizadas);
+      localStorage.setItem("peliculas", JSON.stringify(peliculasActualizadas));
     }
   };
+  
 
 
   useEffect(() => {
@@ -114,6 +113,31 @@ function Home() {
     }
   }, [peliculasVistas]);
 
+  const eliminarConConfirmacion = (pelicula, esVista = false) => {
+    const confirmacion = window.confirm("¿Confirmar eliminación?");
+    if (confirmacion) {
+      if (esVista) {
+        const nuevasVistas = peliculasVistas.filter((p) => p.id !== pelicula.id);
+        setPeliculasVistas(nuevasVistas);
+        localStorage.setItem("vistas", JSON.stringify(nuevasVistas));
+      } else {
+        const filtradas = peliculas.filter((peli) => peli.id !== pelicula.id);
+        setPeliculas(filtradas);
+        localStorage.setItem("peliculas", JSON.stringify(filtradas));
+      }
+    }
+  };
+  const desmarcarComoVista = (pelicula) => {
+   
+    const nuevasVistas = peliculasVistas.filter((p) => p.id !== pelicula.id);
+    setPeliculasVistas(nuevasVistas);
+    localStorage.setItem("vistas", JSON.stringify(nuevasVistas));
+  
+    const nuevasPeliculas = [...peliculas, pelicula];
+    setPeliculas(nuevasPeliculas);
+    localStorage.setItem("peliculas", JSON.stringify(nuevasPeliculas));
+  }; 
+
   return (
 
     <div>
@@ -125,7 +149,7 @@ function Home() {
             <Card
               key={pelicula.id}
               pelicula={pelicula}
-              onEliminar={eliminarConConfirmacion}
+              onEliminar={() => eliminarConConfirmacion(pelicula, false)}
               onModificar={modificarPelicula}
               onMarcarVista={() => marcarComoVista(pelicula)} 
             />
@@ -142,6 +166,9 @@ function Home() {
                 <Card
                   key={pelicula.id}
                   pelicula={pelicula}
+                  onEliminar={() => eliminarConConfirmacion(pelicula, true)}
+                  onModificar={modificarPelicula}
+                  onMarcarVista={() => desmarcarComoVista(pelicula)}
                   vista={true} 
                 />
               ))}

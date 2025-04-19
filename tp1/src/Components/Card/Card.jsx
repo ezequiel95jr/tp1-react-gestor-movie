@@ -3,7 +3,7 @@ import { useState } from "react";
 import Form from "../Form/Form";
 import style from "./Card.module.css";
 
-const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista }) => {
+const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista, vista }) => {
   const [modoEdicion, setModoEdicion] = useState(false);
 
   const cancelarEdicion = () => {
@@ -36,7 +36,9 @@ const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista }) => {
         ) : (
           <Button onClick={() => setModoEdicion(true)}>Editar</Button>
         )}
-        <Button onClick={() => onMarcarVista(pelicula)}>Vista</Button>
+        <Button onClick={() => onMarcarVista(pelicula)}>
+    {vista ? "Quitar de Vistas" : "Marcar como Vista"}
+  </Button>
       </div>
     </div>
   );
