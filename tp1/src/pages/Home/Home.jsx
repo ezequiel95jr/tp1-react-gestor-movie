@@ -4,10 +4,12 @@ import Titulo from "../../Components/Titulo/Titulo";
 import Button from "../../Components/Button/Button";
 import Form from "../../Components/Form/Form";
 import Card from "../../Components/Card/Card";
-import Header from "../../Components/Header/header";
+import Modal from "../../Components/Modal/Modal";
+import Header from "../../Components/Header/Header";
 
 function Home() {
   const [peliculas, setPeliculas] = useState([]);
+  const [mostrarModal, setMostrarModal] = useState(false);
   const [peliculasVistas, setPeliculasVistas] = useState([]);
   const [nuevaPelicula, setNuevaPelicula] = useState({
     titulo: "",
@@ -131,14 +133,24 @@ function Home() {
         ) : (
           <p>No hay películas agregadas aún.</p>
         )}
+        <Button onClick={() => setMostrarModal(true)}>
+          Agregar Película
+        </Button> 
         </div>
-        <div className={styles.form}>
+        {mostrarModal && (
+        <Modal onClose={() => setMostrarModal(false)}>
           <Form
-            onSubmit={agregarPelicula}
+            onSubmit={() => {
+              agregarPelicula();
+              setMostrarModal(false);
+            }}
             onChange={cambiarCampos}
-            pelicula={nuevaPelicula} 
+            pelicula={nuevaPelicula}
           />
-        </div>
+        </Modal>
+      )}
+
+        
     </div>
   </div>
   );

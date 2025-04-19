@@ -7,9 +7,8 @@ const Header = () => {
       <h1>🎬 Mi Gestor de Películas</h1>
       <nav>
         <ul>
-          <li><a href="/">Inicio</a></li>
+          <li><a href="/">Buscar</a></li>
           <li><a href="#form">Agregar</a></li>
-          <li><a href="#vistas">Vistas</a></li>
         </ul>
       </nav>
     </header>

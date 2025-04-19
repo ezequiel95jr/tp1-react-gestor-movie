@@ -1,6 +1,7 @@
 import Button from "../Button/Button";
 import { useState } from "react";
 import Form from "../Form/Form";
+import style from "./Card.module.css";
 
 const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista }) => {
   const [modoEdicion, setModoEdicion] = useState(false);
@@ -10,7 +11,7 @@ const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista }) => {
   };
 
   return (
-    <div className="card">
+    <div className={style.card}>
       {modoEdicion ? (
         <Form
           pelicula={pelicula}
@@ -29,13 +30,13 @@ const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista }) => {
       )}
 
       <div className="card-buttons">
-        <Button texto="Eliminar" onClick={() => onEliminar(pelicula)} />
+        <Button onClick={() => onEliminar(pelicula)}>Eliminar</Button>
         {modoEdicion ? (
           <Button texto="Cancelar" onClick={cancelarEdicion} />
         ) : (
-          <Button texto="Modificar" onClick={() => setModoEdicion(true)} />
+          <Button onClick={() => setModoEdicion(true)}>Editar</Button>
         )}
-        <Button texto="Vista" onClick={() => onMarcarVista(pelicula)} />
+        <Button onClick={() => onMarcarVista(pelicula)}>Vista</Button>
       </div>
     </div>
   );
