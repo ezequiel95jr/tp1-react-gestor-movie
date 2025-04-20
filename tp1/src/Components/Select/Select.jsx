@@ -1,18 +1,18 @@
-import './Select.css';
+import React from 'react';
 
-const Select = ({ options, value, onChange,label,name}) => {
+const Select = ({ label, name, value, onChange, options }) => {
   return (
     <div>
-        <label htmlFor="{name}">{label}</label>
-    <select id={name} value={value} onChange={onChange} className='select'>
-        <options vlaue=""> Seleccione una opocion </options>
-        {options.map((opt)=>(
-            <option key={opt.vlaue} value={opt.value}>
-                {opt.label}</option>
+      <label htmlFor={name}>{label}</label>
+      <select id={name} name={name} value={value} onChange={onChange}>
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
         ))}
-    </select>
+      </select>
     </div>
   );
-}  
+};
 
-export default Select; 
+export default Select;

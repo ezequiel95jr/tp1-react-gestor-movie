@@ -1,19 +1,25 @@
 import React, { useState } from 'react';
 import Button from '../Button/Button'; 
-import Select from '../Select/Select';  
+import Select from '../Select/Select';
+import styles from './Filtro.module.css'; 
 
-
-const Filtros = ({ peliculas, setPeliculasFiltradas }) => {
+const Filtros = ({ peliculas, peliculasVistas, setPeliculasFiltradas, setPeliculasVistasFiltradas }) => {
   const [busqueda, setBusqueda] = useState('');
   const [filtroGenero, setFiltroGenero] = useState('');
   const [filtroTipo, setFiltroTipo] = useState('');
   const [orden, setOrden] = useState('');
 
   const aplicarFiltros = () => {
-    let filtradas = [...peliculas];
+    let filtradasPeliculas = [...peliculas];
+    let filtradasPeliculasVistas = [...peliculasVistas];
 
     if (busqueda) {
-      filtradas = filtradas.filter(
+      filtradasPeliculas = filtradasPeliculas.filter(
+        (p) =>
+          p.titulo.toLowerCase().includes(busqueda.toLowerCase()) ||
+          p.director.toLowerCase().includes(busqueda.toLowerCase())
+      );
+      filtradasPeliculasVistas = filtradasPeliculasVistas.filter(
         (p) =>
           p.titulo.toLowerCase().includes(busqueda.toLowerCase()) ||
           p.director.toLowerCase().includes(busqueda.toLowerCase())
@@ -21,28 +27,35 @@ const Filtros = ({ peliculas, setPeliculasFiltradas }) => {
     }
 
     if (filtroGenero) {
-      filtradas = filtradas.filter((p) => p.genero === filtroGenero);
+      filtradasPeliculas = filtradasPeliculas.filter((p) => p.genero === filtroGenero);
+      filtradasPeliculasVistas = filtradasPeliculasVistas.filter((p) => p.genero === filtroGenero);
     }
 
     if (filtroTipo) {
-      filtradas = filtradas.filter((p) => p.tipo === filtroTipo);
+      filtradasPeliculas = filtradasPeliculas.filter((p) => p.tipo === filtroTipo);
+      filtradasPeliculasVistas = filtradasPeliculasVistas.filter((p) => p.tipo === filtroTipo);
     }
 
     if (orden === 'añoAsc') {
-      filtradas.sort((a, b) => a.año - b.año);
+      filtradasPeliculas.sort((a, b) => a.año - b.año);
+      filtradasPeliculasVistas.sort((a, b) => a.año - b.año);
     } else if (orden === 'añoDesc') {
-      filtradas.sort((a, b) => b.año - a.año);
+      filtradasPeliculas.sort((a, b) => b.año - a.año);
+      filtradasPeliculasVistas.sort((a, b) => b.año - a.año);
     } else if (orden === 'ratingAsc') {
-      filtradas.sort((a, b) => a.rating - b.rating);
+      filtradasPeliculas.sort((a, b) => a.rating - b.rating);
+      filtradasPeliculasVistas.sort((a, b) => a.rating - b.rating);
     } else if (orden === 'ratingDesc') {
-      filtradas.sort((a, b) => b.rating - a.rating);
+      filtradasPeliculas.sort((a, b) => b.rating - a.rating);
+      filtradasPeliculasVistas.sort((a, b) => b.rating - a.rating);
     }
 
-    setPeliculasFiltradas(filtradas);
+    setPeliculasFiltradas(filtradasPeliculas);
+    setPeliculasVistasFiltradas(filtradasPeliculasVistas);
   };
 
   return (
-    <div className="filtros">
+    <div className={styles.filtros}>
       <input
         type="text"
         placeholder="Buscar por título o director"

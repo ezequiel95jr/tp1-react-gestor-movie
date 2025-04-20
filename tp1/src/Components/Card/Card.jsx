@@ -6,7 +6,7 @@ import style from "./Card.module.css";
 const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista, vista }) => {
   const [modoEdicion, setModoEdicion] = useState(false);
 
-  const cancelarEdicion = () => setModoEdicion(false);
+  const aceptarEdicion = () => setModoEdicion(false);
 
   return (
     <div className={`${style.card} ${vista ? style.vista : ""}`}>
@@ -42,7 +42,7 @@ const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista, vista }) => {
       <div className={style.botones}>
         <Button onClick={() => onEliminar(pelicula)}>Eliminar</Button>
         {modoEdicion ? (
-          <Button texto="Cancelar" onClick={cancelarEdicion} />
+          <Button onClick={aceptarEdicion}>Aceptar</Button>
         ) : (
           <Button onClick={() => setModoEdicion(true)}>Editar</Button>
         )}

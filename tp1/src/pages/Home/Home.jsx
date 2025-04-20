@@ -6,94 +6,61 @@ import Form from "../../Components/Form/Form";
 import Card from "../../Components/Card/Card";
 import Modal from "../../Components/Modal/Modal";
 import Header from "../../Components/Header/Header";
+import Filtro from "../../Components/Filtro/Filtro";
 
 function Home() {
   const [peliculas, setPeliculas] = useState([]);
   const [peliculasVistas, setPeliculasVistas] = useState([]);
-
+  const [peliculasFiltradas, setPeliculasFiltradas] = useState([]);
+  const [peliculasVistasFiltradas, setPeliculasVistasFiltradas] = useState([]);
 
   useEffect(() => {
     const peliculasGuardadas = JSON.parse(localStorage.getItem("peliculas")) || [];
-    if (peliculasGuardadas.length > 0) {
-      setPeliculas(peliculasGuardadas);
-    }
+    setPeliculas(peliculasGuardadas);
+    setPeliculasFiltradas(peliculasGuardadas);
   }, []);
-
 
   useEffect(() => {
     const vistasGuardadas = JSON.parse(localStorage.getItem("vistas")) || [];
-    if (vistasGuardadas.length > 0) {
-      setPeliculasVistas(vistasGuardadas);
-    }
+    setPeliculasVistas(vistasGuardadas);
+    setPeliculasVistasFiltradas(vistasGuardadas);
   }, []);
 
-
-  const agregarPelicula = () => {
+  const agregarPelicula = (nuevaPelicula) => {
     const idUnico = peliculas.length ? peliculas[peliculas.length - 1].id + 1 : 1;
     const nuevaConId = { ...nuevaPelicula, id: idUnico };
     const nuevasPeliculas = [...peliculas, nuevaConId];
     setPeliculas(nuevasPeliculas);
-    setNuevaPelicula({
-      titulo: "",
-      genero: "",
-      tipo: "",
-      año: "",
-      director: "",
-      rating: 0,
-    });
-
-
+    setPeliculasFiltradas(nuevasPeliculas);
     localStorage.setItem("peliculas", JSON.stringify(nuevasPeliculas));
   };
-
 
   const eliminarPelicula = (pelicula) => {
     const filtradas = peliculas.filter((peli) => peli.id !== pelicula.id);
     setPeliculas(filtradas);
-
+    setPeliculasFiltradas(filtradas);
     localStorage.setItem("peliculas", JSON.stringify(filtradas));
   };
 
-
-  
-
-
-
   const modificarPelicula = (peliculaEditada) => {
-    const actualizadas = peliculas.map((p) => p.id === peliculaEditada.id ? { ...peliculaEditada } : p
-    );
+    const actualizadas = peliculas.map((p) => p.id === peliculaEditada.id ? { ...peliculaEditada } : p);
     setPeliculas(actualizadas);
-
+    setPeliculasFiltradas(actualizadas);
     localStorage.setItem("peliculas", JSON.stringify(actualizadas));
   };
-
 
   const marcarComoVista = (pelicula) => {
     if (!peliculasVistas.some((p) => p.id === pelicula.id)) {
       const nuevasVistas = [...peliculasVistas, pelicula];
       setPeliculasVistas(nuevasVistas);
       localStorage.setItem("vistas", JSON.stringify(nuevasVistas));
-  
+
       const peliculasActualizadas = peliculas.filter((p) => p.id !== pelicula.id);
       setPeliculas(peliculasActualizadas);
+      setPeliculasFiltradas(peliculasActualizadas);
       localStorage.setItem("peliculas", JSON.stringify(peliculasActualizadas));
     }
   };
-  
-
-
-  useEffect(() => {
-    if (peliculas.length > 0) {
-      localStorage.setItem("peliculas", JSON.stringify(peliculas));
-    }
-  }, [peliculas]);
-
-
-  useEffect(() => {
-    if (peliculasVistas.length > 0) {
-      localStorage.setItem("vistas", JSON.stringify(peliculasVistas));
-    }
-  }, [peliculasVistas]);
 
   const eliminarConConfirmacion = (pelicula, esVista = false) => {
     const confirmacion = window.confirm("¿Confirmar eliminación?");
@@ -101,73 +68,76 @@ function Home() {
       if (esVista) {
         const nuevasVistas = peliculasVistas.filter((p) => p.id !== pelicula.id);
         setPeliculasVistas(nuevasVistas);
+        setPeliculasVistasFiltradas(nuevasVistas);
         localStorage.setItem("vistas", JSON.stringify(nuevasVistas));
       } else {
         const filtradas = peliculas.filter((peli) => peli.id !== pelicula.id);
         setPeliculas(filtradas);
+        setPeliculasFiltradas(filtradas);
         localStorage.setItem("peliculas", JSON.stringify(filtradas));
       }
     }
   };
+
   const desmarcarComoVista = (pelicula) => {
-   
     const nuevasVistas = peliculasVistas.filter((p) => p.id !== pelicula.id);
     setPeliculasVistas(nuevasVistas);
+    setPeliculasVistasFiltradas(nuevasVistas);
     localStorage.setItem("vistas", JSON.stringify(nuevasVistas));
-  
+
     const nuevasPeliculas = [...peliculas, pelicula];
     setPeliculas(nuevasPeliculas);
+    setPeliculasFiltradas(nuevasPeliculas);
     localStorage.setItem("peliculas", JSON.stringify(nuevasPeliculas));
-  }; 
+  };
 
   return (
-  <div>
-    <Header
-      onAgregarPelicula={(peliculaNueva) => {
-        const idUnico = peliculas.length ? peliculas[peliculas.length - 1].id + 1 : 1;
-        const nuevaConId = { ...peliculaNueva, id: idUnico };
-        const nuevasPeliculas = [...peliculas, nuevaConId];
-        setPeliculas(nuevasPeliculas);
-        localStorage.setItem("peliculas", JSON.stringify(nuevasPeliculas));
-      }}
-    />
-
-    <div className={styles.home}>
-      <div className={styles.box}>
-        {peliculas.length > 0 ? (
-          peliculas.map((pelicula) => (
-            <Card
-              key={pelicula.id}
-              pelicula={pelicula}
-              onEliminar={() => eliminarConConfirmacion(pelicula, false)}
-              onModificar={modificarPelicula}
-              onMarcarVista={() => marcarComoVista(pelicula)} 
-            />
-          ))
-        ) : (
-          <p>No hay películas agregadas aún.</p>
-        )}
-      </div>
-
-      {peliculasVistas.length > 0 && (
-        <div className={styles.vistas}>
-          <h2>Películas Vistas</h2>
-          <div className={styles.box}>
-            {peliculasVistas.map((pelicula) => (
+    <div>
+      <Header onAgregarPelicula={agregarPelicula} />
+      <Filtro 
+        peliculas={peliculas} 
+        peliculasVistas={peliculasVistas}
+        setPeliculasFiltradas={setPeliculasFiltradas}
+        setPeliculasVistasFiltradas={setPeliculasVistasFiltradas} 
+      />
+      <div className={styles.home}>
+      <h2>Películas por ver</h2>
+        <div className={styles.box}>
+          {peliculasFiltradas.length > 0 ? (
+            peliculasFiltradas.map((pelicula) => (
               <Card
                 key={pelicula.id}
                 pelicula={pelicula}
-                onEliminar={() => eliminarConConfirmacion(pelicula, true)}
+                onEliminar={eliminarConConfirmacion}
                 onModificar={modificarPelicula}
-                onMarcarVista={() => desmarcarComoVista(pelicula)}
-                vista={true} 
+                onMarcarVista={() => marcarComoVista(pelicula)}
               />
-            ))}
-          </div>
+            ))
+          ) : (
+            <p>No hay películas agregadas aún.</p>
+          )}
         </div>
-      )}
-    </div>  
-  </div>
-);
+
+        {peliculasVistasFiltradas.length > 0 && (
+          <div className={styles.vistas}>
+            <h2>Películas Vistas</h2>
+            <div className={styles.box}>
+              {peliculasVistasFiltradas.map((pelicula) => (
+                <Card
+                  key={pelicula.id}
+                  pelicula={pelicula}
+                  onEliminar={() => eliminarConConfirmacion(pelicula, true)}
+                  onModificar={modificarPelicula}
+                  onMarcarVista={() => desmarcarComoVista(pelicula)}
+                  vista={true}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
+
 export default Home;
