@@ -1,5 +1,7 @@
 import style from "./Form.module.css";  
+import fondoForm from "../../assets/images/mike.png";
 import Button from "../Button/Button";
+import StarRating from "../StarRating/StarRating";
 const Form = ({ pelicula, onSubmit, onChange }) => {
   const handleChange = (e) => {
     onChange(e); 
@@ -45,7 +47,7 @@ const Form = ({ pelicula, onSubmit, onChange }) => {
         value={pelicula.tipo}
         onChange={handleChange}
       >
-        <option value="">Seleccionar tipo</option>
+        <option value="" inert >Seleccionar tipo</option>
         <option value="Película">Película</option>
         <option value="Serie">Serie</option>
       </select>
@@ -57,18 +59,22 @@ const Form = ({ pelicula, onSubmit, onChange }) => {
         <option value="">Seleccionar año</option>
         {generarOpcionesAño()}
       </select>
-      <input
+      <input 
+        placeholder="Director"
         type="text"
         name="director"
         value={pelicula.director}
         onChange={handleChange}
       />
-      <input
-        type="number"
-        name="rating"
+      <div className={style.ratingContainer}>
+      <label>Rating:</label>
+      <StarRating
         value={pelicula.rating}
-        onChange={handleChange}
+        onChange={(newRating) =>
+          onChange({ target: { name: "rating", value: newRating } })
+        }
       />
+      </div>
     <Button type="submit">Agregar</Button>
     </form>
   );

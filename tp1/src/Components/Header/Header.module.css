@@ -1,6 +1,7 @@
-/* src/Components/Header/Header.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
 .header {
-            width: 100vw; /* ocupa todo el ancho de la ventana */
+            width: 100vw;
             background-color: #7a7a7a;
             color: white;
             padding: 1rem 2rem;
@@ -10,9 +11,19 @@
             box-sizing: border-box;
   }
   
+
+  .logo {
+    height: 50px;
+    object-fit: contain;
+  }
+  
   .header h1 {
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 800;
+    font-style: normal;
     margin: 0;
-    font-size: 1.5rem;
+    color: rgb(184, 0, 0);
+    font-size: 3.5rem;
   }
   
   .header nav ul {

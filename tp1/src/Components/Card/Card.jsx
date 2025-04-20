@@ -6,30 +6,40 @@ import style from "./Card.module.css";
 const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista, vista }) => {
   const [modoEdicion, setModoEdicion] = useState(false);
 
-  const cancelarEdicion = () => {
-    setModoEdicion(false); 
-  };
+  const cancelarEdicion = () => setModoEdicion(false);
 
   return (
-    <div className={style.card}>
+    <div className={`${style.card} ${vista ? style.vista : ""}`}>
       {modoEdicion ? (
         <Form
           pelicula={pelicula}
-          onSubmit={() => {}} 
-          onChange={(e) => onModificar({ ...pelicula, [e.target.name]: e.target.value })} 
+          onSubmit={() => {}}
+          onChange={(e) =>
+            onModificar({ ...pelicula, [e.target.name]: e.target.value })
+          }
         />
       ) : (
         <>
-          <h3>{pelicula.titulo}</h3>
-          <p>Género: {pelicula.genero}</p>
-          <p>Tipo: {pelicula.tipo}</p>
-          <p>Año: {pelicula.año}</p>
-          <p>Director: {pelicula.director}</p>
-          <p>Rating: {pelicula.rating}</p>
+          <div className={style.boxcard}>
+          <img
+            className={style.imagen}
+            src={`https://picsum.photos/200/300?random=${pelicula.id}`}
+            alt={pelicula.titulo}
+          />
+
+          <div className={style.info}>
+            <h3>{pelicula.titulo}</h3>
+            <p><strong>Género:</strong> {pelicula.genero}</p>
+            <p><strong>Tipo:</strong> {pelicula.tipo}</p>
+            <p><strong>Año:</strong> {pelicula.año}</p>
+            <p><strong>Director:</strong> {pelicula.director}</p>
+            <p><strong>Rating:</strong> {pelicula.rating}/5</p>
+          </div>
+          </div>
         </>
       )}
 
-      <div className="card-buttons">
+      <div className={style.botones}>
         <Button onClick={() => onEliminar(pelicula)}>Eliminar</Button>
         {modoEdicion ? (
           <Button texto="Cancelar" onClick={cancelarEdicion} />
@@ -37,8 +47,8 @@ const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista, vista }) => {
           <Button onClick={() => setModoEdicion(true)}>Editar</Button>
         )}
         <Button onClick={() => onMarcarVista(pelicula)}>
-    {vista ? "Quitar de Vistas" : "Marcar como Vista"}
-  </Button>
+          {vista ? "Quitar de Vistas" : "Marcar como Vista"}
+        </Button>
       </div>
     </div>
   );

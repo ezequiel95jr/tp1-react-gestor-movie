@@ -1,35 +1,56 @@
 .card {
-    background-color: #363636;
-    border-radius: 1rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    transition: transform 0.3s ease;
-    max-width: 400px;
-    width: 100%;
-  }
-  
-  .card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .card h3 {
-    font-size: 1.8rem;
-    margin-bottom: 0.5rem;
-    color: #dadada;
-  }
-  
-  .card p {
-    margin: 0.3rem 0;
-    font-size: 1.4rem;
-    color: #dadada;
-  }
-  
-  .card .acciones {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 1rem;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  
+  background-color: #363636;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.3s;
+  width: 220px;
+  display:flexbox;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.boxcard{
+  display: flex;
+  flex-direction: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+.imagen {
+  width: 50%;
+  height: 150px;
+  object-fit:contain;
+}
+
+.info {
+  padding: 10px;
+}
+
+.info h3 {
+  margin-bottom: 5px;
+  font-size: 1.2rem;
+}
+
+.info p {
+  margin: 4px 0;
+  font-size: 0.9rem;
+  color: rgb(194, 194, 194)
+}
+
+.botones {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+}
+
+.vista {
+  opacity: 0.6;
+  filter: grayscale(70%);
+}

@@ -9,16 +9,7 @@ import Header from "../../Components/Header/Header";
 
 function Home() {
   const [peliculas, setPeliculas] = useState([]);
-  const [mostrarModal, setMostrarModal] = useState(false);
   const [peliculasVistas, setPeliculasVistas] = useState([]);
-  const [nuevaPelicula, setNuevaPelicula] = useState({
-    titulo: "",
-    genero: "",
-    tipo: "",
-    año: "",
-    director: "",
-    rating: 0,
-  });
 
 
   useEffect(() => {
@@ -35,15 +26,6 @@ function Home() {
       setPeliculasVistas(vistasGuardadas);
     }
   }, []);
-
-
-  const cambiarCampos = (e) => {
-    const { name, value } = e.target;
-    setNuevaPelicula((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
 
 
   const agregarPelicula = () => {
@@ -139,11 +121,19 @@ function Home() {
   }; 
 
   return (
+  <div>
+    <Header
+      onAgregarPelicula={(peliculaNueva) => {
+        const idUnico = peliculas.length ? peliculas[peliculas.length - 1].id + 1 : 1;
+        const nuevaConId = { ...peliculaNueva, id: idUnico };
+        const nuevasPeliculas = [...peliculas, nuevaConId];
+        setPeliculas(nuevasPeliculas);
+        localStorage.setItem("peliculas", JSON.stringify(nuevasPeliculas));
+      }}
+    />
 
-    <div>
-      <Header /> 
-      <div className={styles.home}>
-        <div className={styles.box}>
+    <div className={styles.home}>
+      <div className={styles.box}>
         {peliculas.length > 0 ? (
           peliculas.map((pelicula) => (
             <Card
@@ -157,42 +147,27 @@ function Home() {
         ) : (
           <p>No hay películas agregadas aún.</p>
         )}
-        </div>
-        {peliculasVistas.length > 0 && (
-          <div className={styles.vistas}>
-            <h2>Películas Vistas</h2>
-            <div className={styles.box}>
-              {peliculasVistas.map((pelicula) => (
-                <Card
-                  key={pelicula.id}
-                  pelicula={pelicula}
-                  onEliminar={() => eliminarConConfirmacion(pelicula, true)}
-                  onModificar={modificarPelicula}
-                  onMarcarVista={() => desmarcarComoVista(pelicula)}
-                  vista={true} 
-                />
-              ))}
-            </div>
+      </div>
+
+      {peliculasVistas.length > 0 && (
+        <div className={styles.vistas}>
+          <h2>Películas Vistas</h2>
+          <div className={styles.box}>
+            {peliculasVistas.map((pelicula) => (
+              <Card
+                key={pelicula.id}
+                pelicula={pelicula}
+                onEliminar={() => eliminarConConfirmacion(pelicula, true)}
+                onModificar={modificarPelicula}
+                onMarcarVista={() => desmarcarComoVista(pelicula)}
+                vista={true} 
+              />
+            ))}
           </div>
-        )}
-        {mostrarModal && (
-        <Modal onClose={() => setMostrarModal(false)}>
-          <Form
-            onSubmit={() => {
-              agregarPelicula();
-              setMostrarModal(false);
-            }}
-            onChange={cambiarCampos}
-            pelicula={nuevaPelicula}
-          />
-        </Modal>
+        </div>
       )}
-        <Button onClick={() => setMostrarModal(true)}>
-          Agregar 
-        </Button> 
     </div>  
   </div>
-  );
+);
 }
-
 export default Home;

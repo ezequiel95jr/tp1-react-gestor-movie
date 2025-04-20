@@ -1,13 +1,15 @@
 .form {
-  background-color: #363636;
-  border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-image: url("../../assets/images/mike.png");
+  background-size:20%;
+  background-position:left;
+  background-repeat:no-repeat;
+  background-position: top right;  
   padding: 2rem;
-  max-width: 400px;
-  width: 100%;
-  margin: 0 auto;
-  text-align: center;
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  height: 400px; 
 }
+
 
 .form h2 {
   font-size: 1.8rem;
@@ -15,8 +17,7 @@
   color: #dadada;
 }
 
-.form input,
-.form select {
+.form input, .form select {
   width: 100%;
   padding: 0.8rem 1rem;
   margin-bottom: 1rem;
@@ -26,12 +27,20 @@
   transition: border-color 0.3s ease;
 }
 
-.form input:focus,
-.form select:focus {
+.form input:focus, .form select:focus {
   border-color: #666;
   outline: none;
 }
 
 .form button {
   margin-top: 1rem;
+}
+
+.ratingContainer{
+  display: flex;
+  justify-content: center;
+  align-items:center;
+  gap: 5px;
+  font-size: 2rem;
+  cursor: pointer;
 }
