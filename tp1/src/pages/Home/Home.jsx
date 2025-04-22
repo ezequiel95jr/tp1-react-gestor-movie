@@ -53,6 +53,7 @@ function Home() {
     if (!peliculasVistas.some((p) => p.id === pelicula.id)) {
       const nuevasVistas = [...peliculasVistas, pelicula];
       setPeliculasVistas(nuevasVistas);
+      setPeliculasVistasFiltradas(nuevasVistas);
       localStorage.setItem("vistas", JSON.stringify(nuevasVistas));
 
       const peliculasActualizadas = peliculas.filter((p) => p.id !== pelicula.id);
