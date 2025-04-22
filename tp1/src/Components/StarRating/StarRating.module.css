@@ -1,23 +1,24 @@
 .rating {
-    display: flex;
-    gap: 5px;
-    font-size: 2rem;
-    cursor: pointer;
-    flex-direction: row-reverse;
-  }
-  
-  
-  .star {
-    color: #ccc;
-    transition: color 0.2s ease;
-  }
-  
-  .star:hover,
-  .star:hover ~ .star {
-    color: #ffcc00;
-  }
-  
-  .filled {
-    color: #ffc107;
-  }
-  
+  display: flex;
+  gap: 5px;
+  font-size: 2rem;
+  flex-direction: row-reverse;
+}
+
+.star {
+  color: #ccc;
+  transition: color 0.2s ease;
+}
+
+.editable {
+  cursor: pointer;
+}
+
+.editable:hover,
+.editable:hover ~ .editable {
+  color: #ffcc00;
+}
+
+.filled {
+  color: #ffc107;
+}

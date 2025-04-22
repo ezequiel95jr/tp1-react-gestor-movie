@@ -67,6 +67,7 @@ onChange(e);
           onChange={(newRating) =>
             onChange({ target: { name: "rating", value: newRating } })
           }
+          editable={true}
         />
       </div>
       {!modoEdicion && <button type="submit">Agregar</button>}

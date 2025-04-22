@@ -2,6 +2,7 @@ import Button from "../Button/Button";
 import { useState } from "react";
 import Form from "../Form/Form";
 import style from "./Card.module.css";
+import StarRating from "../StarRating/StarRating";
 
 const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista, vista }) => {
   const [modoEdicion, setModoEdicion] = useState(false);
@@ -34,7 +35,13 @@ const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista, vista }) => {
             <p><strong>Tipo:</strong> {pelicula.tipo}</p>
             <p><strong>Año:</strong> {pelicula.año}</p>
             <p><strong>Director:</strong> {pelicula.director}</p>
-            <p><strong>Rating:</strong> {pelicula.rating}/5</p>
+            <p><strong>Rating:</strong></p><StarRating
+          value={pelicula.rating}
+          onChange={(newRating) =>
+            onChange({ target: { name: "rating", value: newRating } })
+          }
+          editable={false}
+        />
           </div>
           </div>
         </>
