@@ -17,6 +17,7 @@ const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista, vista }) => {
           onChange={(e) =>
             onModificar({ ...pelicula, [e.target.name]: e.target.value })
           }
+          modoEdicion={true}
         />
       ) : (
         <>

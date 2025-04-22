@@ -4,7 +4,7 @@ import Button from "../Button/Button";
 import StarRating from "../StarRating/StarRating";
 
 
-const Form = ({ pelicula, onSubmit, onChange }) => {
+const Form = ({ pelicula, onSubmit, onChange,modoEdicion = false }) => {
   const handleChange = (e) => {
 onChange(e);
   };
@@ -69,7 +69,7 @@ onChange(e);
           }
         />
       </div>
-      <Button type="submit">Agregar</Button>
+      {!modoEdicion && <button type="submit">Agregar</button>}
     </form>
   );
 };
