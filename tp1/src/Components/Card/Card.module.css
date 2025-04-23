@@ -1,7 +1,7 @@
 .card {
   background-color: #363636;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-radius: 5px;
+  box-shadow: 0 4px 12px rgba(86, 86, 86, 0.1);
   overflow: hidden;
   transition: transform 0.3s;
   width: 220px;
@@ -45,7 +45,8 @@
 
 .botones {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  flex-direction:row;
   gap: 8px;
   padding: 10px;
 }

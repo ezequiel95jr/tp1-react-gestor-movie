@@ -1,46 +1,85 @@
 .form {
   background-image: url("../../assets/images/mike.png");
-  background-size:20%;
-  background-position:left;
-  background-repeat:no-repeat;
-  background-position: top right;  
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-  height: 400px; 
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: top right;
+  background-color: #1f1f1f;
+  padding: 2rem 3rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  color: #eaeaea;
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
-
 
 .form h2 {
-  font-size: 1.8rem;
+  font-size: 2rem;
+  color: #ffffff;
+  text-align: center;
   margin-bottom: 1rem;
-  color: #dadada;
 }
 
-.form input, .form select {
+.form input,
+.form select {
   width: 100%;
-  padding: 0.8rem 1rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 0.5rem;
-  font-size: 1.4rem;
-  transition: border-color 0.3s ease;
+  padding: 0.9rem 1.2rem;
+  border: none;
+  border-radius: 0.8rem;
+  font-size: 1rem;
+  background-color: #2c2c2c;
+  color: #f1f1f1;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.form input:focus, .form select:focus {
-  border-color: #666;
+.form input::placeholder {
+  color: #888;
+}
+
+.form input:focus,
+.form select:focus {
   outline: none;
+  background-color: #3a3a3a;
+  box-shadow: 0 0 0 2px #4caf50;
 }
 
 .form button {
-  margin-top: 1rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 0.9rem;
+  font-size: 1rem;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.ratingContainer{
+.form button:hover {
+  background-color: #45a049;
+}
+
+.ratingContainer {
   display: flex;
-  justify-content: center;
-  align-items:center;
-  gap: 5px;
-  font-size: 2rem;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  color: #ccc;
+}
+
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #eaeaea;
+}
+
+.checkboxContainer input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #4caf50;
   cursor: pointer;
 }

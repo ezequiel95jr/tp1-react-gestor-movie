@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import Button from '../Button/Button'; 
+import React, { useState, useEffect } from 'react';
+import Button from '../Button/Button';
 import Select from '../Select/Select';
-import styles from './Filtro.module.css'; 
+import Busqueda from '../Busqueda/Busqueda';
+import styles from './Filtro.module.css';
 
 const Filtros = ({ peliculas, peliculasVistas, setPeliculasFiltradas, setPeliculasVistasFiltradas }) => {
-  const [busqueda, setBusqueda] = useState('');
+
   const [filtroGenero, setFiltroGenero] = useState('');
   const [filtroTipo, setFiltroTipo] = useState('');
   const [orden, setOrden] = useState('');
@@ -12,19 +13,6 @@ const Filtros = ({ peliculas, peliculasVistas, setPeliculasFiltradas, setPelicul
   const aplicarFiltros = () => {
     let filtradasPeliculas = [...peliculas];
     let filtradasPeliculasVistas = [...peliculasVistas];
-
-    if (busqueda) {
-      filtradasPeliculas = filtradasPeliculas.filter(
-        (p) =>
-          p.titulo.toLowerCase().includes(busqueda.toLowerCase()) ||
-          p.director.toLowerCase().includes(busqueda.toLowerCase())
-      );
-      filtradasPeliculasVistas = filtradasPeliculasVistas.filter(
-        (p) =>
-          p.titulo.toLowerCase().includes(busqueda.toLowerCase()) ||
-          p.director.toLowerCase().includes(busqueda.toLowerCase())
-      );
-    }
 
     if (filtroGenero) {
       filtradasPeliculas = filtradasPeliculas.filter((p) => p.genero === filtroGenero);
@@ -36,18 +24,25 @@ const Filtros = ({ peliculas, peliculasVistas, setPeliculasFiltradas, setPelicul
       filtradasPeliculasVistas = filtradasPeliculasVistas.filter((p) => p.tipo === filtroTipo);
     }
 
-    if (orden === 'añoAsc') {
-      filtradasPeliculas.sort((a, b) => a.año - b.año);
-      filtradasPeliculasVistas.sort((a, b) => a.año - b.año);
-    } else if (orden === 'añoDesc') {
-      filtradasPeliculas.sort((a, b) => b.año - a.año);
-      filtradasPeliculasVistas.sort((a, b) => b.año - a.año);
-    } else if (orden === 'ratingAsc') {
-      filtradasPeliculas.sort((a, b) => a.rating - b.rating);
-      filtradasPeliculasVistas.sort((a, b) => a.rating - b.rating);
-    } else if (orden === 'ratingDesc') {
-      filtradasPeliculas.sort((a, b) => b.rating - a.rating);
-      filtradasPeliculasVistas.sort((a, b) => b.rating - a.rating);
+    switch (orden) {
+      case 'añoAsc':
+        filtradasPeliculas.sort((a, b) => a.año - b.año);
+        filtradasPeliculasVistas.sort((a, b) => a.año - b.año);
+        break;
+      case 'añoDesc':
+        filtradasPeliculas.sort((a, b) => b.año - a.año);
+        filtradasPeliculasVistas.sort((a, b) => b.año - a.año);
+        break;
+      case 'ratingAsc':
+        filtradasPeliculas.sort((a, b) => a.rating - b.rating);
+        filtradasPeliculasVistas.sort((a, b) => a.rating - b.rating);
+        break;
+      case 'ratingDesc':
+        filtradasPeliculas.sort((a, b) => b.rating - a.rating);
+        filtradasPeliculasVistas.sort((a, b) => b.rating - a.rating);
+        break;
+      default:
+        break;
     }
 
     setPeliculasFiltradas(filtradasPeliculas);
@@ -56,13 +51,6 @@ const Filtros = ({ peliculas, peliculasVistas, setPeliculasFiltradas, setPelicul
 
   return (
     <div className={styles.filtros}>
-      <input
-        type="text"
-        placeholder="Buscar por título o director"
-        value={busqueda}
-        onChange={(e) => setBusqueda(e.target.value)}
-      />
-
       <Select
         label="Género"
         name="genero"
@@ -110,4 +98,4 @@ const Filtros = ({ peliculas, peliculasVistas, setPeliculasFiltradas, setPelicul
   );
 };
 
-export default Filtros;
+export default Filtros

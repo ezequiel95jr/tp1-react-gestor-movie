@@ -2,13 +2,14 @@
 
 .header {
             width: 100vw;
-            background-color: #7a7a7a;
+            background-color: #404040;
             color: white;
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             box-sizing: border-box;
+            position: static;
   }
   
 

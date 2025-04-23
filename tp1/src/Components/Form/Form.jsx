@@ -6,23 +6,13 @@ import StarRating from "../StarRating/StarRating";
 
 const Form = ({ pelicula, onSubmit, onChange,modoEdicion = false }) => {
   const handleChange = (e) => {
-onChange(e);
-  };
+  onChange(e);
+    };
 
-  const generarOpcionesAño = () => {
-    const opciones = [];
-    for (let año = 1895; año <= 2025; año++) {
-      opciones.push(
-        <option key={año} value={String(año)}>
-          {año}
-        </option>
-      );
-    }
-    return opciones;
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("Enviando formulario", pelicula);
     onSubmit();
   };
 
@@ -49,10 +39,16 @@ onChange(e);
         <option value="Película">Película</option>
         <option value="Serie">Serie</option>
       </select>
-      <select name="año" value={pelicula.año} onChange={handleChange}>
-        <option value="">Seleccionar año</option>
-        {generarOpcionesAño()}
-      </select>
+      <input
+        type="number"
+        name="año"
+        min="1895"
+        max={new Date().getFullYear()}
+        placeholder="Año"
+        value={pelicula.año}
+        onChange={handleChange}
+      />
+
       <input
         placeholder="Director"
         type="text"
@@ -69,8 +65,23 @@ onChange(e);
           }
         />
       </div>
+          <div className={style.checkboxContainer}>
+          <label>
+            <input
+              type="checkbox"
+              name="vista"
+              checked={pelicula.vista || false}
+              onChange={(e) =>
+                onChange({
+                  target: { name: "vista", value: e.target.checked }
+                })
+              }
+            />
+            Vista
+          </label>
+        </div>
       {!modoEdicion && <button type="submit">Agregar</button>}
-    </form>
+          </form>
   );
 };
 

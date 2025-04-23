@@ -1,5 +1,6 @@
-import Button from "../Button/Button";
 import { useState } from "react";
+import Button from "../Button/Button";
+import { Trash2, Pencil, Eye, EyeOff } from "lucide-react";
 import Form from "../Form/Form";
 import style from "./Card.module.css";
 
@@ -41,14 +42,20 @@ const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista, vista }) => {
       )}
 
       <div className={style.botones}>
-        <Button onClick={() => onEliminar(pelicula)}>Eliminar</Button>
+        <Button onClick={() => onEliminar(pelicula)} className={style.iconButton}>
+        <Trash2 color="red" size={20} />
+        </Button>
         {modoEdicion ? (
-          <Button onClick={aceptarEdicion}>Aceptar</Button>
+          <Button onClick={aceptarEdicion} className={style.iconButton}>
+            <Pencil size={20} />
+          </Button>
         ) : (
-          <Button onClick={() => setModoEdicion(true)}>Editar</Button>
+          <Button onClick={() => setModoEdicion(true) }className={style.iconButton}>
+            <Pencil size={20} />
+          </Button>
         )}
-        <Button onClick={() => onMarcarVista(pelicula)}>
-          {vista ? "Quitar de Vistas" : "Marcar como Vista"}
+        <Button onClick={() => onMarcarVista(pelicula)}className={style.iconButton}>
+          {vista ? <EyeOff size={20} /> : <Eye size={20} />}
         </Button>
       </div>
     </div>

@@ -4,8 +4,11 @@
     font-size: 2rem;
     cursor: pointer;
     flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50px;
   }
-  
   
   .star {
     color: #ccc;
