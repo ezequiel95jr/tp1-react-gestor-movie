@@ -5,7 +5,7 @@ import Button from "../../Components/Button/Button";
 import Form from "../../Components/Form/Form";
 import Card from "../../Components/Card/Card";
 import Modal from "../../Components/Modal/Modal";
-import Header from "../../Components/Header/Header";
+import Header from "../../Components/Header/header";
 import Filtro from "../../Components/Filtro/Filtro";
 
 function Home() {
