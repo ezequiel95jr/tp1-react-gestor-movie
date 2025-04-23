@@ -5,10 +5,11 @@ import Filtro from "../../Components/Filtro/Filtro";
 import Card from "../../Components/Card/Card";
 
 function Home() {
-  const [peliculas, setPeliculas] = useState([]);  
+  const [peliculas, setPeliculas] = useState([]);  // Lista vacía inicialmente
   const [peliculasPorVerFiltradas, setPeliculasPorVerFiltradas] = useState([]);
   const [peliculasVistasFiltradas, setPeliculasVistasFiltradas] = useState([]);
   const [busqueda, setBusqueda] = useState("");
+  const [filtrosActivos, setFiltrosActivos] = useState(false);
 
   
   useEffect(() => {
@@ -63,44 +64,72 @@ function Home() {
     };
     const nuevasPeliculas = [...peliculas, nueva];
     setPeliculas(nuevasPeliculas);
+  
+    // Actualizar las listas filtradas de inmediato
+    if (busqueda.trim() === "") {
+      setPeliculasPorVerFiltradas(nuevasPeliculas.filter((p) => !p.vista));
+      setPeliculasVistasFiltradas(nuevasPeliculas.filter((p) => p.vista));
+    } else {
+      manejarBusqueda(busqueda); // Ejecuta el filtro si hay búsqueda activa
+    }
   };
-
+  
   const modificarPelicula = (editada) => {
     const actualizadas = peliculas.map((p) =>
       p.id === editada.id ? { ...editada } : p
     );
     setPeliculas(actualizadas);
-  };
-
-  const eliminarConConfirmacion = (id) => {
-    console.log("Intentando eliminar película con id:", id); 
-    if (window.confirm("¿Eliminar esta película/serie?")) {
-      
-      peliculas.forEach((pelicula) => {
-        console.log(`Película en el array: ${pelicula.titulo}, id: ${pelicula.id}`);
-      });
-
-      const actualizadas = peliculas.filter((p) => {
-        console.log(`Comparando ${p.id} con ${id}`); 
-        return p.id !== id; 
-      });
-
-      console.log("Películas después de la eliminación:", actualizadas); 
-      setPeliculas(actualizadas);
-      localStorage.setItem("peliculas", JSON.stringify(actualizadas));
+  
+    // Actualizar las listas filtradas después de la modificación
+    if (busqueda.trim() === "") {
+      setPeliculasPorVerFiltradas(actualizadas.filter((p) => !p.vista));
+      setPeliculasVistasFiltradas(actualizadas.filter((p) => p.vista));
+    } else {
+      manejarBusqueda(busqueda); // Vuelve a aplicar la búsqueda
     }
   };
+  
+  const eliminarConConfirmacion = (id) => {
+    if (window.confirm("¿Eliminar esta película/serie?")) {
+      const actualizadas = peliculas.filter((p) => p.id !== id);
+      setPeliculas(actualizadas);
+  
+      // Actualizar las listas filtradas después de la eliminación
+      if (busqueda.trim() === "") {
+        setPeliculasPorVerFiltradas(actualizadas.filter((p) => !p.vista));
+        setPeliculasVistasFiltradas(actualizadas.filter((p) => p.vista));
+      } else {
+        manejarBusqueda(busqueda); // Aplica el filtro si hay búsqueda activa
+      }
+    }
+  };
+  
 
 
   const MarcarVista = (id) => {
+    // Actualiza el estado de vista de la película
     const actualizadas = peliculas.map((p) =>
       p.id === id ? { ...p, vista: !p.vista } : p
     );
     setPeliculas(actualizadas);
+  
+    // Actualiza las listas filtradas de inmediato para reflejar el cambio
+    if (busqueda.trim() === "") {
+      setPeliculasPorVerFiltradas(actualizadas.filter((p) => !p.vista)); // Películas por ver
+      setPeliculasVistasFiltradas(actualizadas.filter((p) => p.vista));   // Películas vistas
+    } else {
+      manejarBusqueda(busqueda); // Vuelve a aplicar el filtro si hay búsqueda activa
+    }
   };
+  
 
-  const listaPorVer = busqueda ? peliculasPorVerFiltradas : peliculasPorVer;
-  const listaVistas = busqueda ? peliculasVistasFiltradas : peliculasYaVistas;
+  const listaPorVer = filtrosActivos || busqueda
+    ? peliculasPorVerFiltradas
+    : peliculasPorVer;
+
+  const listaVistas = filtrosActivos || busqueda
+    ? peliculasVistasFiltradas
+    : peliculasYaVistas;
 
   return (
     <div>
@@ -110,6 +139,7 @@ function Home() {
         peliculasVistas={peliculas.filter((p) => p.vista)}
         setPeliculasFiltradas={setPeliculasPorVerFiltradas}
         setPeliculasVistasFiltradas={setPeliculasVistasFiltradas}
+        setFiltrosActivos={setFiltrosActivos}
       />
 
       <div className={styles.titulo}>
@@ -128,7 +158,11 @@ function Home() {
             />
           ))
         ) : (
-          <p>{busqueda ? "No existen resultados." : "No hay películas pendientes."}</p>
+          <p>
+  {(busqueda || filtrosActivos)
+    ? "No existen resultados."
+    : "No hay películas pendientes."}
+</p>
         )}
       </div>
 
@@ -148,7 +182,11 @@ function Home() {
             />
           ))
         ) : (
-          <p>{busqueda ? "No existen resultados." : "No hay películas vistas aún."}</p>
+          <p>
+  {(busqueda || filtrosActivos)
+    ? "No existen resultados."
+    : "No hay películas pendientes."}
+</p>
         )}
       </div>
     </div>
