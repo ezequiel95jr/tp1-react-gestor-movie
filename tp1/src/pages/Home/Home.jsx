@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import styles from "./Home.module.css";
-import Header from "../../Components/Header/Header";
+import Header from "../../Components/Header/header";
 import Filtro from "../../Components/Filtro/Filtro";
 import Card from "../../Components/Card/Card";
 
