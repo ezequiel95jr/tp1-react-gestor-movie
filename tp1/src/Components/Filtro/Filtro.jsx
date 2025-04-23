@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Select from '../Select/Select';
 import styles from './Filtro.module.css';
 
-const Filtros = ({ peliculas, peliculasVistas, setPeliculasFiltradas, setPeliculasVistasFiltradas }) => {
+const Filtros = ({ peliculas, peliculasVistas, setPeliculasFiltradas, setPeliculasVistasFiltradas, setFiltrosActivos }) => {
   const [filtroGenero, setFiltroGenero] = useState('');
   const [filtroTipo, setFiltroTipo] = useState('');
   const [orden, setOrden] = useState('');
+  
 
   const ordenamientos = {
     añoAsc: (a, b) => a.año - b.año,
@@ -14,28 +15,53 @@ const Filtros = ({ peliculas, peliculasVistas, setPeliculasFiltradas, setPelicul
     ratingDesc: (a, b) => b.rating - a.rating,
   };
 
-  const filtrar = (lista) => {
-    let resultado = [...lista];
+  const filtrar = () => {
+    const aplicarFiltro = (lista) => {
+      let resultado = [...lista];
+  
+      // Filtrar por género
+      if (filtroGenero) {
+        resultado = resultado.filter((p) => p.genero === filtroGenero);
+      }
+  
+      // Filtrar por tipo
+      if (filtroTipo) {
+        resultado = resultado.filter((p) => p.tipo === filtroTipo);
+      }
+  
+      // Ordenar
+      if (orden && ordenamientos[orden]) {
+        resultado.sort(ordenamientos[orden]);
+      }
+      
+      
+      // Actualizar estado de filtros activos
+      
+  
+      return resultado;
+    };
+    setFiltrosActivos(filtroGenero || filtroTipo || orden ? true : false);
 
-    if (filtroGenero) {
-      resultado = resultado.filter((p) => p.genero === filtroGenero);
-    }
+const filtradasPorVer = aplicarFiltro(peliculas);
+const filtradasVistas = aplicarFiltro(peliculasVistas);
 
-    if (filtroTipo) {
-      resultado = resultado.filter((p) => p.tipo === filtroTipo);
-    }
+setPeliculasFiltradas(filtradasPorVer);
+setPeliculasVistasFiltradas(filtradasVistas);
 
-    if (orden && ordenamientos[orden]) {
-      resultado.sort(ordenamientos[orden]);
-    }
-
-    return resultado;
+    // Actualizar los estados de películas filtradas
+    setPeliculasFiltradas(filtradasPorVer);
+    setPeliculasVistasFiltradas(filtradasVistas);
   };
 
-  useEffect(() => {
-    setPeliculasFiltradas(filtrar(peliculas));
-    setPeliculasVistasFiltradas(filtrar(peliculasVistas));
-  }, [filtroGenero, filtroTipo, orden, peliculas, peliculasVistas]);
+  const limpiarFiltros = () => {
+    setFiltroGenero('');
+    setFiltroTipo('');
+    setOrden('');
+    setPeliculasFiltradas(peliculas);
+    setPeliculasVistasFiltradas(peliculasVistas);
+    setFiltrosActivos(false);
+
+  };
 
   return (
     <div className={styles.filtros}>
@@ -80,6 +106,11 @@ const Filtros = ({ peliculas, peliculasVistas, setPeliculasFiltradas, setPelicul
           { value: 'ratingDesc', label: 'Rating descendente' },
         ]}
       />
+
+      <div className={styles.botones}>
+        <button className={styles.boton} onClick={filtrar}>Aplicar filtros</button>
+        <button className={styles.boton} onClick={limpiarFiltros}>Limpiar filtros</button>
+      </div>
     </div>
   );
 };
