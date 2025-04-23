@@ -93,7 +93,12 @@ function Home() {
   return (
     <div>
       <Header onAgregarPelicula={agregarPelicula} onBusqueda={manejarBusqueda} />
-      <Filtro peliculas={peliculas} setPeliculas={setPeliculas} />
+      <Filtro
+      peliculas={peliculas.filter((p) => !p.vista)}
+      peliculasVistas={peliculas.filter((p) => p.vista)}
+      setPeliculasFiltradas={setPeliculasPorVerFiltradas}
+      setPeliculasVistasFiltradas={setPeliculasVistasFiltradas}
+    />
 
       <div className={styles.titulo}>
         <h3>Películas por ver | [CONTADOR: {listaPorVer.length}]</h3>

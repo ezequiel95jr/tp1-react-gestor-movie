@@ -1,53 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import Button from '../Button/Button';
 import Select from '../Select/Select';
-import Busqueda from '../Busqueda/Busqueda';
 import styles from './Filtro.module.css';
 
 const Filtros = ({ peliculas, peliculasVistas, setPeliculasFiltradas, setPeliculasVistasFiltradas }) => {
-
   const [filtroGenero, setFiltroGenero] = useState('');
   const [filtroTipo, setFiltroTipo] = useState('');
   const [orden, setOrden] = useState('');
 
-  const aplicarFiltros = () => {
-    let filtradasPeliculas = [...peliculas];
-    let filtradasPeliculasVistas = [...peliculasVistas];
+  const ordenamientos = {
+    añoAsc: (a, b) => a.año - b.año,
+    añoDesc: (a, b) => b.año - a.año,
+    ratingAsc: (a, b) => a.rating - b.rating,
+    ratingDesc: (a, b) => b.rating - a.rating,
+  };
+
+  const filtrar = (lista) => {
+    let resultado = [...lista];
 
     if (filtroGenero) {
-      filtradasPeliculas = filtradasPeliculas.filter((p) => p.genero === filtroGenero);
-      filtradasPeliculasVistas = filtradasPeliculasVistas.filter((p) => p.genero === filtroGenero);
+      resultado = resultado.filter((p) => p.genero === filtroGenero);
     }
 
     if (filtroTipo) {
-      filtradasPeliculas = filtradasPeliculas.filter((p) => p.tipo === filtroTipo);
-      filtradasPeliculasVistas = filtradasPeliculasVistas.filter((p) => p.tipo === filtroTipo);
+      resultado = resultado.filter((p) => p.tipo === filtroTipo);
     }
 
-    switch (orden) {
-      case 'añoAsc':
-        filtradasPeliculas.sort((a, b) => a.año - b.año);
-        filtradasPeliculasVistas.sort((a, b) => a.año - b.año);
-        break;
-      case 'añoDesc':
-        filtradasPeliculas.sort((a, b) => b.año - a.año);
-        filtradasPeliculasVistas.sort((a, b) => b.año - a.año);
-        break;
-      case 'ratingAsc':
-        filtradasPeliculas.sort((a, b) => a.rating - b.rating);
-        filtradasPeliculasVistas.sort((a, b) => a.rating - b.rating);
-        break;
-      case 'ratingDesc':
-        filtradasPeliculas.sort((a, b) => b.rating - a.rating);
-        filtradasPeliculasVistas.sort((a, b) => b.rating - a.rating);
-        break;
-      default:
-        break;
+    if (orden && ordenamientos[orden]) {
+      resultado.sort(ordenamientos[orden]);
     }
 
-    setPeliculasFiltradas(filtradasPeliculas);
-    setPeliculasVistasFiltradas(filtradasPeliculasVistas);
+    return resultado;
   };
+
+  useEffect(() => {
+    setPeliculasFiltradas(filtrar(peliculas));
+    setPeliculasVistasFiltradas(filtrar(peliculasVistas));
+  }, [filtroGenero, filtroTipo, orden, peliculas, peliculasVistas]);
 
   return (
     <div className={styles.filtros}>
@@ -92,10 +80,8 @@ const Filtros = ({ peliculas, peliculasVistas, setPeliculasFiltradas, setPelicul
           { value: 'ratingDesc', label: 'Rating descendente' },
         ]}
       />
-
-      <Button onClick={aplicarFiltros}>Aplicar Filtros</Button>
     </div>
   );
 };
 
-export default Filtros
+export default Filtros;
