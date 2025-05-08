@@ -14,6 +14,8 @@ const Card = ({ pelicula, onEliminar, onModificar, onMarcarVista, vista }) => {
       {modoEdicion ? (
         <Form
           pelicula={pelicula}
+          //esto no es correcto semanticamente, si es un form el boton del fondo deberia ejecutar la funcion onSubmit
+          //del form 
           onSubmit={() => {}}
           onChange={(e) =>
             onModificar({ ...pelicula, [e.target.name]: e.target.value })
