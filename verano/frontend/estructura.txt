@@ -1,0 +1,42 @@
+frontend/
+├── public/
+│   └── marker.png
+├── src/
+│   ├── api/
+│   │   ├── api.ts
+│   │   └── reports.api.ts
+│   ├── components/
+│   │   ├── layout/
+│   │   │   ├── Navbar.tsx
+│   │   │   └── PageContainer.tsx
+│   │   ├── map/
+│   │   │   ├── MapView.tsx
+│   │   │   ├── MapMarker.tsx
+│   │   │   └── MapPopup.tsx
+│   │   ├── reports/
+│   │   │   ├── ReportCard.tsx
+│   │   │   ├── ReportForm.tsx
+│   │   │   └── ReportList.tsx
+│   │   ├── ui/
+│   │   │   ├── Button.tsx
+│   │   │   ├── Input.tsx
+│   │   │   └── Select.tsx
+│   ├── hooks/
+│   │   ├── useReports.ts
+│   │   ├── useGeolocation.ts
+│   │   └── useDebounce.ts
+│   ├── pages/
+│   │   ├── HomePage.tsx
+│   │   ├── CreateReportPage.tsx
+│   │   ├── StatsPage.tsx
+│   │   └── ReportDetailPage.tsx
+│   ├── types/
+│   │   └── report.ts
+│   ├── utils/
+│   │   ├── date.ts
+│   │   └── geo.ts
+│   ├── App.tsx
+│   ├── main.tsx
+│   └── styles.css
+├── index.html
+└── tsconfig.json

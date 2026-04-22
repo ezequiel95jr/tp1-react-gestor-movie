@@ -1,0 +1,16 @@
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+
+# Backend
+backend/vendor/
+
+# Entornos
+.env
+.env.*
+!.env.example
+
+# Logs / OS
+*.log
+.DS_Store

@@ -1,0 +1,263 @@
+          style={{
+            background: "#0f0f0f5a",
+            color: "#f5f5f5",
+            padding: 24,
+            borderRadius: 8,
+            textAlign: "center",
+          }}
+
+
+
+
+export default function ReportDetailPage() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { reports, loading } = useReports();
+  const { user } = useAuth();
+  const [likesCount, setLikesCount] = useState(
+    report?.likes_list.length || 0
+  );
+
+  const [liked, setLiked] = useState(
+    report?.likes?.some((l) => l.user_id === user?.id) || false
+  );
+
+  const [commentText, setCommentText] = useState("");
+  const [comments, setComments] = useState(
+    report?.comments || []
+  );
+  const report = reports.find((r) => r.id === id);
+
+  if (loading) {
+    return (
+      <Container>
+        <div
+          style={{
+            background: "#0f0f0f",
+            color: "#999",
+            padding: 24,
+            borderRadius: 8,
+          }}
+        >
+          Cargando reporte…
+        </div>
+      </Container>
+    );
+  }
+
+  if (!report) {
+    return (
+      <Container>
+        <div
+          style={{
+            background: "#0f0f0f5a",
+            color: "#f5f5f5",
+            padding: 24,
+            borderRadius: 8,
+            textAlign: "center",
+          }}
+        >
+          <p style={{ marginBottom: 16 }}>
+            El reporte que estás buscando no existe o fue eliminado.
+          </p>
+
+          <button
+            onClick={() => navigate("/reports")}
+            style={{
+              background: "#3b82f6",
+              color: "#fff",
+            }}
+          >
+            Volver a reportes
+          </button>
+        </div>
+      </Container>
+    );
+  }
+
+  const canEdit =
+    user &&
+    (user.role === "admin" || user.id === report.user?.id);
+
+  async function handleDelete() {
+    if (!report) return;
+
+    const confirmDelete = window.confirm(
+      "¿Estás seguro de que querés eliminar este reporte?"
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      await deleteReport(report.id);
+      navigate("/reports");
+    } catch {
+      alert("Error eliminando el reporte");
+    }
+  }
+
+
+  async function handleLike() {
+    if (!user) return;
+
+    try {
+      const res = await toggleLike(report.id);
+
+      setLiked(res.liked);
+
+      setLikesCount((prev) =>
+        res.liked ? prev + 1 : prev - 1
+      );
+    } catch {
+      alert("Error al dar like");
+    }
+  }
+
+  async function handleComment(e: React.FormEvent) {
+    e.preventDefault();
+
+    if (!user || !commentText.trim()) return;
+
+    try {
+      const newComment = await createComment(
+        report.id,
+        commentText
+      );
+
+      setComments((prev) => [...prev, newComment]);
+      setCommentText("");
+    } catch {
+      alert("Error al comentar");
+    }
+  }
+
+  return (
+    <>
+      <Container>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, background: "#9090905a", padding: 16, borderRadius: 8 }}>
+          <h1>Detalle del reporte</h1>
+          <button
+            onClick={() => navigate("/reports")}
+            style={{
+              background: "#16a34a",
+              color: "#fff",
+              padding: "12px 20px",
+              marginTop: 32,
+            }}
+          >
+            Volver a reportes
+          </button>
+        </div>
+        <div
+          style={{
+            background: "#0f0f0f",
+            color: "#f5f5f5",
+            padding: 32,
+            borderRadius: 8,
+          }}
+        >
+          <h2 style={{ marginTop: 0, fontSize: 22 }}>
+            {report.summary}
+          </h2>
+
+          <p style={{ margin: "16px 0", lineHeight: 1.6 }}>
+            {report.description}
+          </p>
+
+          <div
+            style={{
+              marginTop: 24,
+              display: "flex",
+              gap: 16,
+              flexWrap: "wrap",
+              fontSize: 14,
+              opacity: 0.8,
+            }}
+          >
+            <span>📌 Prioridad: {report.priority}</span>
+            {report.category && (
+              <span>🏷 Categoría: {report.category}</span>
+            )}
+            <span>📍 Ubicación: {report.address}</span>
+            <span>
+              {report.created_at && (
+                <>
+                  🕒  {new Date(report.created_at).toLocaleString()}
+                </>
+              )}
+            </span>
+          </div>
+          <div>
+            <span style={{ marginLeft: 8, fontWeight: 600 }}>
+              <small>Autor: </small>{report.user?.name ?? "Usuario desconocido"}
+            </span>
+          </div>
+          <div>
+
+            {user && (
+              <button onClick={handleLike}>
+                ❤️ Me gusta
+              </button>
+            )}
+            {canEdit && (
+              <>
+                <div>
+                  <button onClick={() => navigate(`/reports/${report.id}/edit`)}
+                    style={{
+                      background: "#3b82f6",
+                      color: "#fff",
+                      padding: "12px 20px",
+                      marginTop: 32,
+                      marginLeft: 16,
+                    }}>
+                    ✏️ Editar
+                  </button>
+                  <button
+                    onClick={handleDelete}
+                    style={{
+                      background: "#dc2626",
+                      color: "#fff",
+                      marginLeft: 12,
+                    }}
+                  >
+                    🗑 Eliminar
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+          {user && (
+            <form onSubmit={handleComment}>
+              <input value={comment} onChange={(e) => setComment(e.target.value)} />
+              <button>Comentar</button>
+            </form>
+          )}
+
+        </div>
+        <h3>Comentarios ({comments.length})</h3>
+
+        {comments.map((c) => (
+          <div key={c.id} style={{ marginBottom: 12 }}>
+            <strong>{c.user?.name ?? "Usuario"}</strong>
+            <p>{c.content}</p>
+          </div>
+        ))}
+
+        {user && (
+          <form onSubmit={handleComment}>
+            <input
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+              placeholder="Escribí un comentario..."
+            />
+            <button type="submit">Comentar</button>
+          </form>
+        )}
+
+
+      </Container>
+
+
+    </>
+  );
+}

@@ -1,0 +1,28 @@
+manejo de errores: 
+	1) al crear un report:
+		a) si falla, mejorar la visual 
+		b) si se crea, mostrar un modal de "creado"
+	2) mejorar la página de reportes:
+		a) si se cargan muchos reportes, se va de página (meter un scroll)
+		b) 
+
+mejoras 20/02:
+	1) Likes: 
+		Un usuario solo puede darle 1 like a un post.
+		un post puede tener muchos likes 
+	2) Comentarios: 
+		Un usuario puede comentar un post
+		Un post puede tener muchos comentarios
+
+
+en el header: Usar el "Reportes" y cambiar a "Mis reportes" haciendo referencia a los reportes hechos por el usuario logueado
+Habría que re ubicar el acutal "Reporte" para poder ir a un "Feed".
+Quizás, podríamos usar el logo, pero es poco intuíble.
+
+También podría dejar el header más limpio y hacer un un dropdown para poner ahí:
+	Si esta logueado: Mis reportes/ Reportes generales.
+	Si no está logueado: Sin dropdown y solo "Reportes".
+YA SEEEEEEEEEEEEE:
+	Usemos el dropdown en donde ahora esta Mapa: 
+		Reportes / Ver mapa
+	El "Mis reportes" solo aparece donde ahora esta "Reportes" solo si el usuario esta log.
