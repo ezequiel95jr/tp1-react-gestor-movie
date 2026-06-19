@@ -40,11 +40,13 @@ const Filtros = ({ peliculas, peliculasVistas, setPeliculasFiltradas, setPelicul
   
       return resultado;
     };
+
     setFiltrosActivos(filtroGenero || filtroTipo || orden ? true : false);
 
 const filtradasPorVer = aplicarFiltro(peliculas);
 const filtradasVistas = aplicarFiltro(peliculasVistas);
 
+//Ojo que estan llamando dos veces a los mismos sets 
 setPeliculasFiltradas(filtradasPorVer);
 setPeliculasVistasFiltradas(filtradasVistas);
 

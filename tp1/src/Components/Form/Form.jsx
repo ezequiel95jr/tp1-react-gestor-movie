@@ -48,7 +48,7 @@ const Form = ({ pelicula, onSubmit, onChange,modoEdicion = false }) => {
         value={pelicula.año}
         onChange={handleChange}
       />
-
+{/* Aca podrian reutilizar el componente input que tienen */}
       <input
         placeholder="Director"
         type="text"

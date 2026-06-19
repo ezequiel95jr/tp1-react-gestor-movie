@@ -4,7 +4,7 @@ import Form from "../Form/Form";
 import Modal from "../Modal/Modal";
 import styles from "./Header.module.css";
 import Busqueda from "../Busqueda/Busqueda";
-
+//Nombre de archivo deberia estar con mayuscula
 import logo from "../../assets/images/cinema-paradiso.png";
 
 const Header = ({ onAgregarPelicula, onBusqueda}) => {

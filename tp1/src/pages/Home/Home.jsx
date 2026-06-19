@@ -73,6 +73,9 @@ function Home() {
       manejarBusqueda(busqueda); // Ejecuta el filtro si hay búsqueda activa
     }
   };
+  //muchas funciones (modificarPelicula, eliminar, MarcarVista, etc.)
+  //  repiten el mismo patron de actualizacion de listas y localStorage.
+  //  Se puede refactorizar y modularizar.
   
   const modificarPelicula = (editada) => {
     const actualizadas = peliculas.map((p) =>
